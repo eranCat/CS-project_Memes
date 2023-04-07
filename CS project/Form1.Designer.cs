@@ -69,7 +69,7 @@ namespace CS_project
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1249, 757);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1249, 740);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // flowLayoutPanel1
@@ -85,13 +85,14 @@ namespace CS_project
             // 
             // button1
             // 
+            this.button1.BackColor = System.Drawing.SystemColors.HighlightText;
             this.button1.Enabled = false;
             this.button1.Location = new System.Drawing.Point(3, 3);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(196, 197);
             this.button1.TabIndex = 1;
             this.button1.Text = "Show random";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // loadBtn
@@ -110,7 +111,7 @@ namespace CS_project
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(3, 336);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(279, 50);
+            this.comboBox1.Size = new System.Drawing.Size(279, 37);
             this.comboBox1.TabIndex = 3;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectionIndexChanged);
             // 
@@ -120,7 +121,7 @@ namespace CS_project
             this.label1.Font = new System.Drawing.Font("Impact", 14F);
             this.label1.Location = new System.Drawing.Point(3, 711);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(112, 46);
+            this.label1.Size = new System.Drawing.Size(70, 29);
             this.label1.TabIndex = 4;
             this.label1.Text = "label1";
             // 
