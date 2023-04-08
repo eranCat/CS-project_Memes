@@ -1,21 +1,27 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Script.Serialization;
-using System.Windows.Forms;
-using System.Xml.Linq;
 
 namespace CS_project
 {
     class MemeAPI
     {
         private static MemeAPI instance = new MemeAPI();
+        private const string USERNAME = "eran9999";//static by default
+        private const string API_PWD = "yf9k@rZ34LRDv7r";//static by default
+        private static readonly HttpClient client = new HttpClient();
 
-        private MemeAPI() {
+        private GeneratedMeme currentMeme;
+
+        private List<Meme> memes;
+        public List<Meme> Memes { get => memes; }
+
+        private MemeAPI()
+        {
             memes = new List<Meme>();
         }
 
@@ -23,46 +29,92 @@ namespace CS_project
         {
             get => instance;
         }
-        
-        private List<Meme> memes;
-        public List<Meme> Memes { get => memes; }
 
+        public GeneratedMeme CurrentMeme { get => currentMeme; }
 
-        public bool LoadPouplarMemes()
+        public async Task CreateMemeAsync(GeneratedMeme m)
         {
-            using (var client = new System.Net.Http.HttpClient())
+            const string apiUrl = "https://api.imgflip.com/caption_image";
+            Dictionary<string, string> requestBody = new Dictionary<string, string> {
+                {"template_id", m.Id },
+                {"username", USERNAME },
+                {"password", API_PWD },
+                {"text0", m.TopText },
+                {"text1", m.BottomText },
+            };
+            // Serialize the request body to form URL-encoded string
+            string formUrlEncodedRequestBody = new FormUrlEncodedContent(requestBody).ReadAsStringAsync().Result;
+
+            // Send the POST request
+            StringContent content = new StringContent(formUrlEncodedRequestBody, Encoding.UTF8, "application/x-www-form-urlencoded");
+            HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+
+            // Check if the request was successful
+            if (response.IsSuccessStatusCode)
             {
-                var endpoint = new Uri("https://api.imgflip.com/get_memes");
-                var result = client.GetAsync(endpoint).Result;
-                var jsonStr = result.Content.ReadAsStringAsync().Result;
-                Console.WriteLine(jsonStr);
-                JObject json = JObject.Parse(jsonStr);
+                // Read the response content as string
+                string responseContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(responseContent);
 
-                if ((bool)json["success"])
+                JObject json = JObject.Parse(responseContent);
+                if (json.ContainsKey("success"))
                 {
-                    //convert json[data][memes] array to C# obj
-                    JObject data = (JObject)json["data"];
-                    JArray memesJsonArr = (JArray)data["memes"];
-
-                    this.memes = memesJsonArr.ToObject<List<Meme>>();
-
-                    //this.memes = ser.Deserialize<List<Meme>>(strMemes);
-                    Console.WriteLine(memes);
-                    //memes.AddRange((Array<Meme>)json["data"]["meme"]);
-
-                    return true;
+                    if ((bool)json["success"])
+                    {
+                        string pageUrl = (string)json["data"]["page_url"];
+                        string url = (string)json["data"]["url"];
+                        m.ImgUrl = url;
+                        this.currentMeme = m;
+                        Console.WriteLine("Created meme at:" + pageUrl);
+                    }
+                    else
+                    {
+                        string errMsg = (string)json["error_message"];
+                        Console.WriteLine(errMsg);
+                        throw new Exception(errMsg);
+                    }
                 }
-                else
-                {
-                    //handle the error 
-                    string errMsg = (string)json["error_message"];
-                    Console.WriteLine(errMsg);
-                    throw new Exception(errMsg);
-                    //return false;
-                }
+
+                
             }
-            return false;
+            else
+            {
+                Console.WriteLine("Failed to make POST request. Status code: " + response.StatusCode);
+            }
+
         }
+
+        public async Task LoadPouplarMemes()
+        {
+            const string url = "https://api.imgflip.com/get_memes";
+            Console.WriteLine("Load memes - get");
+
+            var jsonStr = await client.GetStringAsync(url);
+
+            Console.WriteLine(jsonStr);
+            JObject json = JObject.Parse(jsonStr);
+
+            if ((bool)json["success"])
+            {
+                //convert json[data][memes] array to C# obj
+                JObject data = (JObject)json["data"];
+                JArray memesJsonArr = (JArray)data["memes"];
+
+                memes = memesJsonArr.ToObject<List<Meme>>();
+
+                Console.WriteLine("Memes Loaded:" + memes);
+            }
+            else
+            {
+                //handle the error 
+                string errMsg = (string)json["error_message"];
+                Console.WriteLine(errMsg);
+
+                throw new Exception(errMsg);
+            }
+
+        }
+
         public Meme getRandomMeme()
         {
             if (memes.Count == 0)
@@ -75,6 +127,14 @@ namespace CS_project
 
             return memes[rndIndex];
         }
-    }
 
+        public Dictionary<string,string> getMappedMemes()
+        {
+            return memes.ToDictionary( m => m.Id,m=> m.Name);
+        }
+        public static void clearResources()
+        {
+            client.Dispose();
+        }
+    }
 }
