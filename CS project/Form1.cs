@@ -13,14 +13,18 @@ namespace CS_project
 {
     public partial class Form1 : Form
     {
+       
         public Form1()
         {
             InitializeComponent();
+            label4.BackColor = System.Drawing.Color.Transparent;
+
         }
+        
 
         private void Form1_Load(object sender, EventArgs e)
         {
-           
+            label4.BackColor = System.Drawing.Color.Transparent;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -34,6 +38,7 @@ namespace CS_project
             {
                 MessageBox.Show("Memes list is empty!");
             }
+            
         }
 
         private void loadBtn_Click(object sender, EventArgs e)
@@ -69,6 +74,44 @@ namespace CS_project
             //MessageBox.Show(comboBox1.Text);
             int i = comboBox1.SelectedIndex;
             showMeme(MemeAPI.Instance.Memes[i]);
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+            label4.Text = textBox1.Text;
+            
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            label5.Text = textBox2.Text;
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pBox_meme_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void pBox_meme_Click_1(object sender, EventArgs e)
+        {
+            label4.BackColor = System.Drawing.Color.Transparent;
+
+        }
+        
+        private void label4_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
