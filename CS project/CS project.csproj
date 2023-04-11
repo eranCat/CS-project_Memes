@@ -99,8 +99,10 @@
     <Compile Include="CreateMemeForm.Designer.cs">
       <DependentUpon>CreateMemeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Meme.cs" />
-    <Compile Include="MemeAPI.cs" />
+    <Compile Include="DataModels\GeneratedMeme.cs" />
+    <Compile Include="DataModels\Meme.cs" />
+    <Compile Include="DataModels\MemeAPI.cs" />
+    <Compile Include="PanelsMeme.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CreateMemeForm.resx">

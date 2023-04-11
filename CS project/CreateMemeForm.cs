@@ -45,8 +45,10 @@ namespace CS_project
             string id = ( (KeyValuePair<string,string>) comboBox1.SelectedItem).Key;
             string text1 = textBox1.Text;
             string text2 = textBox2.Text;
+            string text3 = textBox3.Text;
+            string text4 = textBox4.Text;
 
-            GeneratedMeme newMeme = new GeneratedMeme(id, text1, text2);
+            GeneratedMeme newMeme = new GeneratedMeme(id, text1, text2,text3,text4);
 
             try
             {

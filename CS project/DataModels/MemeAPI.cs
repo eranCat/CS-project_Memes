@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,18 +36,30 @@ namespace CS_project
         public async Task CreateMemeAsync(GeneratedMeme m)
         {
             const string apiUrl = "https://api.imgflip.com/caption_image";
-            Dictionary<string, string> requestBody = new Dictionary<string, string> {
+            List<Dictionary<string, string>> boxes = new List<Dictionary<string, string>>();
+            boxes.Add(new Dictionary<string, string> { { "text", m.Text1 } });
+            boxes.Add(new Dictionary<string, string> { { "text", m.Text2 } });
+            boxes.Add(new Dictionary<string, string> { { "text", m.Text3 } });
+            boxes.Add(new Dictionary<string, string> { { "text", m.Text4 } });
+
+
+            Dictionary<string, string> formData = new Dictionary<string, string> {
                 {"template_id", m.Id },
                 {"username", USERNAME },
                 {"password", API_PWD },
-                {"text0", m.TopText },
-                {"text1", m.BottomText },
+                //{"boxes[0][text]", m.Text1},
+                //{"boxes[1][text]", m.Text2},
+                {"text0", m.Text1 },
+                {"text1", m.Text2 },
             };
-            // Serialize the request body to form URL-encoded string
-            string formUrlEncodedRequestBody = new FormUrlEncodedContent(requestBody).ReadAsStringAsync().Result;
 
-            // Send the POST request
+          
+            // Serialize the request body to form URL-encoded string
+            string formUrlEncodedRequestBody = new FormUrlEncodedContent(formData).ReadAsStringAsync().Result;
+
             StringContent content = new StringContent(formUrlEncodedRequestBody, Encoding.UTF8, "application/x-www-form-urlencoded");
+           
+            // Send the POST request
             HttpResponseMessage response = await client.PostAsync(apiUrl, content);
 
             // Check if the request was successful
@@ -113,6 +126,21 @@ namespace CS_project
                 throw new Exception(errMsg);
             }
 
+        }
+
+        // Helper method to convert dictionary to query string
+        private string ToQueryString(Dictionary<string, object> dictionary)
+        {
+            List<string> keyValues = new List<string>();
+
+            foreach (var kvp in dictionary)
+            {
+                string key = Uri.EscapeDataString(kvp.Key);
+                string value = Uri.EscapeDataString(kvp.Value.ToString());
+                keyValues.Add($"{key}={value}");
+            }
+
+            return string.Join("&", keyValues);
         }
 
         public Meme getRandomMeme()
