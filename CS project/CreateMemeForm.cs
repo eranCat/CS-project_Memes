@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -11,6 +12,7 @@ namespace CS_project
         public CreateMemeForm()
         {
             InitializeComponent();
+            
         }
 
         private async void Form1_Load(object sender, EventArgs e)
@@ -60,7 +62,7 @@ namespace CS_project
                 return;
             }
 
-            Console.WriteLine(newMeme.ImgUrl);
+            Debug.WriteLine(newMeme.ImgUrl);
             showMeme(newMeme);
         }
 

@@ -35,8 +35,6 @@ namespace CS_project
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.resetBtn = new System.Windows.Forms.Button();
-            this.generateBtn = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.linkLabelUrl = new System.Windows.Forms.LinkLabel();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -44,6 +42,8 @@ namespace CS_project
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.textBox4 = new System.Windows.Forms.TextBox();
+            this.generateBtn = new System.Windows.Forms.Button();
+            this.resetBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pBox_meme)).BeginInit();
             this.tableLayoutPanel_main.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -92,8 +92,8 @@ namespace CS_project
             this.tableLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.52451F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 57.47549F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.Controls.Add(this.textBox1, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.textBox2, 1, 1);
@@ -119,12 +119,13 @@ namespace CS_project
             // 
             // textBox1
             // 
+            this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(280, 4);
+            this.textBox1.Location = new System.Drawing.Point(220, 4);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(367, 100);
+            this.textBox1.Size = new System.Drawing.Size(427, 100);
             this.textBox1.TabIndex = 5;
             // 
             // label1
@@ -135,7 +136,7 @@ namespace CS_project
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(4, 1);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(269, 46);
+            this.label1.Size = new System.Drawing.Size(209, 46);
             this.label1.TabIndex = 6;
             this.label1.Text = "Text 1";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -148,42 +149,20 @@ namespace CS_project
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(4, 108);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(269, 46);
+            this.label2.Size = new System.Drawing.Size(209, 46);
             this.label2.TabIndex = 7;
             this.label2.Text = "Text 2";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // resetBtn
-            // 
-            this.resetBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.resetBtn.Location = new System.Drawing.Point(4, 433);
-            this.resetBtn.Name = "resetBtn";
-            this.resetBtn.Size = new System.Drawing.Size(209, 79);
-            this.resetBtn.TabIndex = 4;
-            this.resetBtn.Text = "Reset";
-            this.resetBtn.UseVisualStyleBackColor = true;
-            this.resetBtn.Click += new System.EventHandler(this.resetButton_Click);
-            // 
-            // generateBtn
-            // 
-            this.generateBtn.Enabled = false;
-            this.generateBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.generateBtn.Location = new System.Drawing.Point(280, 433);
-            this.generateBtn.Name = "generateBtn";
-            this.generateBtn.Size = new System.Drawing.Size(282, 79);
-            this.generateBtn.TabIndex = 1;
-            this.generateBtn.Text = "Generate";
-            this.generateBtn.UseVisualStyleBackColor = true;
-            this.generateBtn.Click += new System.EventHandler(this.generateMeme_Click);
-            // 
             // textBox2
             // 
+            this.textBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(280, 111);
+            this.textBox2.Location = new System.Drawing.Point(220, 111);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox2.Size = new System.Drawing.Size(367, 100);
+            this.textBox2.Size = new System.Drawing.Size(427, 100);
             this.textBox2.TabIndex = 8;
             // 
             // linkLabelUrl
@@ -217,19 +196,20 @@ namespace CS_project
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(4, 216);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(269, 46);
+            this.label3.Size = new System.Drawing.Size(209, 46);
             this.label3.TabIndex = 7;
             this.label3.Text = "Text 3";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // textBox3
             // 
+            this.textBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox3.Location = new System.Drawing.Point(280, 219);
+            this.textBox3.Location = new System.Drawing.Point(220, 219);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox3.Size = new System.Drawing.Size(367, 100);
+            this.textBox3.Size = new System.Drawing.Size(427, 100);
             this.textBox3.TabIndex = 8;
             // 
             // label4
@@ -240,20 +220,44 @@ namespace CS_project
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(4, 323);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(269, 46);
+            this.label4.Size = new System.Drawing.Size(209, 46);
             this.label4.TabIndex = 7;
             this.label4.Text = "Text 4";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // textBox4
             // 
+            this.textBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox4.Location = new System.Drawing.Point(280, 326);
+            this.textBox4.Location = new System.Drawing.Point(220, 326);
             this.textBox4.Multiline = true;
             this.textBox4.Name = "textBox4";
             this.textBox4.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox4.Size = new System.Drawing.Size(367, 100);
+            this.textBox4.Size = new System.Drawing.Size(427, 100);
             this.textBox4.TabIndex = 8;
+            // 
+            // generateBtn
+            // 
+            this.generateBtn.Enabled = false;
+            this.generateBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.generateBtn.Location = new System.Drawing.Point(220, 433);
+            this.generateBtn.Name = "generateBtn";
+            this.generateBtn.Size = new System.Drawing.Size(282, 79);
+            this.generateBtn.TabIndex = 1;
+            this.generateBtn.Text = "Generate";
+            this.generateBtn.UseVisualStyleBackColor = true;
+            this.generateBtn.Click += new System.EventHandler(this.generateMeme_Click);
+            // 
+            // resetBtn
+            // 
+            this.resetBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.resetBtn.Location = new System.Drawing.Point(4, 433);
+            this.resetBtn.Name = "resetBtn";
+            this.resetBtn.Size = new System.Drawing.Size(209, 79);
+            this.resetBtn.TabIndex = 4;
+            this.resetBtn.Text = "Reset";
+            this.resetBtn.UseVisualStyleBackColor = true;
+            this.resetBtn.Click += new System.EventHandler(this.resetButton_Click);
             // 
             // CreateMemeForm
             // 
@@ -277,10 +281,8 @@ namespace CS_project
         #endregion
         private System.Windows.Forms.PictureBox pBox_meme;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel_main;
-        private System.Windows.Forms.Button generateBtn;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Button resetBtn;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.LinkLabel linkLabelUrl;
@@ -290,6 +292,8 @@ namespace CS_project
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Button resetBtn;
+        private System.Windows.Forms.Button generateBtn;
     }
 }
 
