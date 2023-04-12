@@ -29,7 +29,7 @@ namespace CS_project
             get => instance;
         }
 
-        public GeneratedMeme CurrentMeme { get => currentMeme; }
+        public GeneratedMeme CurrentMeme { get => currentMeme; set => currentMeme = value; }
 
         public async Task CreateMemeAsync(GeneratedMeme m)
         {
