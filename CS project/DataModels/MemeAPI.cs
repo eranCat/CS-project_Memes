@@ -87,7 +87,7 @@ namespace CS_project
 
         }
 
-        public async Task LoadPouplarMemes()
+        public async Task LoadPouplarMemes(bool randomise = false)
         {
             Debug.WriteLine("Load memes - get");
 
@@ -104,6 +104,11 @@ namespace CS_project
 
                 memes = memesJsonArr.ToObject<List<Meme>>();
 
+                if (randomise)
+                {
+                    Shuffle(memes);
+                }
+
                 Debug.WriteLine("Memes Loaded:" + memes);
             }
             else
@@ -116,7 +121,19 @@ namespace CS_project
             }
 
         }
-
+        public static void Shuffle<T>(IList<T> list)
+        {
+            Random rng = new Random();
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+        }
         public Dictionary<string,string> getMappedMemes()
         {
             return memes.ToDictionary( m => m.Id,m=> m.Name);

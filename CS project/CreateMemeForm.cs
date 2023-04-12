@@ -22,7 +22,7 @@ namespace CS_project
 
             try
             {
-                await MemeAPI.Instance.LoadPouplarMemes();
+                await MemeAPI.Instance.LoadPouplarMemes(randomise: true);
             }
             catch (Exception error)
             {
@@ -159,7 +159,15 @@ namespace CS_project
             }
             else
             {
-                LocalDB.Instance.SaveData(m);
+                try{
+                    LocalDB.Instance.SaveData(m);
+                }
+                catch(Exception err)
+                {
+                    MessageBox.Show(err.Message);
+                    return;
+                }
+                MessageBox.Show("Saved successfully");
             }
         }
 
