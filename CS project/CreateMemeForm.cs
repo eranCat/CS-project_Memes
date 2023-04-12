@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Windows.Forms;
 
 namespace CS_project
@@ -184,6 +186,27 @@ namespace CS_project
             else
             {
                 MessageBox.Show("No saved data found!");
+            }
+        }
+
+        private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            string selectedMemeName = ((KeyValuePair<string, string>)comboBox1.SelectedItem).Value;
+            saveDialog.FileName = selectedMemeName;
+            saveDialog.DefaultExt = "jpg";
+            saveDialog.Filter = "JPG Image | *.jpg";
+            saveDialog.ValidateNames = true;
+            DialogResult dialogResult = saveDialog.ShowDialog();
+
+            if (dialogResult == DialogResult.OK)
+            {
+                int width = (pBox_meme.Width);
+                int height = (pBox_meme.Height);
+                Bitmap bitmap = new Bitmap(width, height);
+
+                pBox_meme.DrawToBitmap(bitmap, new Rectangle(0, 0, width, height));
+                bitmap.Save(saveDialog.FileName);
             }
         }
     }
