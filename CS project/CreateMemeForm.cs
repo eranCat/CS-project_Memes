@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CS_project
@@ -45,7 +46,12 @@ namespace CS_project
             }));
         }
 
-        private async void generateMeme_Click(object sender, EventArgs e)
+        private void generateMeme_Click(object sender, EventArgs e)
+        {
+            GenerateMeme();
+        }
+
+        private async Task GenerateMeme()
         {
             KeyValuePair<string, string> selectedItem = (KeyValuePair<string, string>)comboBox1.SelectedItem;
             string id = selectedItem.Key;
@@ -56,7 +62,20 @@ namespace CS_project
             string text3 = textBox3.Text;
             string text4 = textBox4.Text;
 
-            GeneratedMeme newMeme = new GeneratedMeme(id, name, url, text1, text2, text3, text4);
+            RadioButton checkedRBtn = typePanel.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked);
+            //MemeType memeType = MemeType.Funny;
+            GeneratedMeme newMeme;
+            switch (checkedRBtn?.Name)
+            {
+                case "rBtnFunny":
+                    newMeme = new FunnyMeme(id, name, url, text1, text2, text3, text4);
+                    break;
+                case "rBtnSad":
+                    newMeme = new SadMeme(id, name, url, text1, text2, text3, text4);
+                    break;
+                default:MessageBox.Show("Choose a type!");
+                    return;
+            }
 
             try
             {
@@ -93,6 +112,14 @@ namespace CS_project
                 }
                 else
                     Console.WriteLine("image url returned null");
+
+                if (gm is FunnyMeme)
+                {
+                    rBtnFunny.Checked = true;
+                }
+                else if(gm is SadMeme){
+                    rBtnSad.Checked = true;
+                }
             }
             else if (m.Url != null)
             {
@@ -113,31 +140,8 @@ namespace CS_project
             MemeAPI.clearResources();
         }
 
-        private void linkLabelUrl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            GeneratedMeme m = MemeAPI.Instance.CurrentMeme;
-
-            string url = m?.ImgUrl;
-            if (url == null)
-            {
-                MessageBox.Show("Not generated yet");
-                return;
-            }
-            try
-            {
-                VisitLink(url);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Unable to open link that was clicked.");
-            }
-        }
-
         private void VisitLink(string link)
         {
-            // Change the color of the link text by setting LinkVisited
-            // to true.
-            linkLabelUrl.LinkVisited = true;
             //Call the Process.Start method to open the default browser
             //with a URL:
             Process.Start(link);

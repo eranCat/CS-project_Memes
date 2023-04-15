@@ -29,4 +29,23 @@
         public string Text4 { get => text4; set => text4 = value; }
         public string ImgUrl { get => imgUrl; set => imgUrl = value; }
     }
+
+    class SadMeme : GeneratedMeme
+    {
+        public SadMeme(string id, string name, string url, string text1, string text2, string text3 = null, string text4 = null) : base(id, name, url, text1, text2, text3, text4)
+        {
+        }
+    }
+
+    class FunnyMeme : GeneratedMeme
+    {
+        public FunnyMeme(string id, string name, string url, string text1, string text2, string text3 = null, string text4 = null) : base(id, name, url, text1, text2, text3, text4)
+        {
+        }
+    }
+
+    public enum MemeType
+    {
+        Funny,Sad
+    }
 }
