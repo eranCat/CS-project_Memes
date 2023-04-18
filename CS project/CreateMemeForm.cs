@@ -13,6 +13,8 @@ namespace CS_project
 {
     public partial class CreateMemeForm : Form
     {
+        bool generateOnEdit = true;//TODO save user's settigns with checkbox 
+
         public CreateMemeForm()
         {
             InitializeComponent();
@@ -73,7 +75,8 @@ namespace CS_project
                 case "rBtnSad":
                     newMeme = new SadMeme(id, name, url, text1, text2, text3, text4);
                     break;
-                default:MessageBox.Show("Choose a type!");
+                default:
+                    MessageBox.Show("Choose a type!");
                     return;
             }
 
@@ -117,7 +120,8 @@ namespace CS_project
                 {
                     rBtnFunny.Checked = true;
                 }
-                else if(gm is SadMeme){
+                else if (gm is SadMeme)
+                {
                     rBtnSad.Checked = true;
                 }
             }
@@ -165,10 +169,11 @@ namespace CS_project
             }
             else
             {
-                try{
+                try
+                {
                     LocalDB.Instance.SaveData(m);
                 }
-                catch(Exception err)
+                catch (Exception err)
                 {
                     MessageBox.Show(err.Message);
                     return;
@@ -212,6 +217,21 @@ namespace CS_project
                 pBox_meme.DrawToBitmap(bitmap, new Rectangle(0, 0, width, height));
                 bitmap.Save(saveDialog.FileName);
             }
+        }
+        private void textBox1_Leave(object sender, EventArgs e)
+        {
+            updateFrom(textBox1);
+        }
+        private void textBox2_Leave(object sender, EventArgs e)
+        {
+            updateFrom(textBox2);
+        }
+
+        private void updateFrom(TextBox textBox)
+        {
+            if (!generateOnEdit) return;
+            if (textBox.Text.Length > 0)
+                GenerateMeme();
         }
     }
 }
