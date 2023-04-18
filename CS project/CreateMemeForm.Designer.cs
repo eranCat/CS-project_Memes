@@ -162,7 +162,6 @@ namespace CS_project
             this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBox2.Size = new System.Drawing.Size(731, 100);
             this.textBox2.TabIndex = 8;
-            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // label2
             // 
@@ -213,7 +212,6 @@ namespace CS_project
             this.label4.TabIndex = 7;
             this.label4.Text = "Text 4";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // textBox4
             // 
