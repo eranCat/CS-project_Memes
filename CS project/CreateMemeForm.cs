@@ -18,7 +18,16 @@ namespace CS_project
         public CreateMemeForm()
         {
             InitializeComponent();
+            setFormSizePercentage(.8,.8);
+        }
 
+        private void setFormSizePercentage(double wPercent,double hPercent)
+        {
+            Rectangle screen = Screen.FromPoint(Cursor.Position).WorkingArea;
+            int w = (int)(screen.Width * wPercent);
+            int h = (int)(screen.Height * hPercent);
+            
+            this.Size = new Size(w, h);
         }
 
         private async void Form1_Load(object sender, EventArgs e)
@@ -58,7 +67,7 @@ namespace CS_project
             KeyValuePair<string, string> selectedItem = (KeyValuePair<string, string>)comboBox1.SelectedItem;
             string id = selectedItem.Key;
             string name = selectedItem.Value;
-            string url = "url";//TODO set url
+            string url = "url";
             string text1 = textBox1.Text;
             string text2 = textBox2.Text;
             string text3 = textBox3.Text;
@@ -90,7 +99,6 @@ namespace CS_project
                 return;
             }
 
-            Debug.WriteLine(newMeme.ImgUrl);
             ShowMeme(newMeme);
         }
 
@@ -109,9 +117,9 @@ namespace CS_project
                     textBox4.Text = gm.Text4;
                     comboBox1.SelectedIndex = comboBox1.FindStringExact(gm.Name);
                 }
-                if (gm.ImgUrl != null)
+                if (gm.Url != null)
                 {
-                    pBox_meme.Load(gm.ImgUrl);
+                    pBox_meme.Load(gm.Url);
                 }
                 else
                     Console.WriteLine("image url returned null");
@@ -134,7 +142,6 @@ namespace CS_project
 
         private void comboBox1_SelectionIndexChanged(object sender, EventArgs e)
         {
-            //MessageBox.Show(comboBox1.Text);
             int i = comboBox1.SelectedIndex;
             ShowMeme(MemeAPI.Instance.Memes[i]);
         }
@@ -142,13 +149,6 @@ namespace CS_project
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             MemeAPI.clearResources();
-        }
-
-        private void VisitLink(string link)
-        {
-            //Call the Process.Start method to open the default browser
-            //with a URL:
-            Process.Start(link);
         }
 
         private void resetButton_Click(object sender, EventArgs e)
@@ -159,7 +159,7 @@ namespace CS_project
             textBox4.Clear();
         }
 
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //MessageBox.Show("Save");
             GeneratedMeme m = MemeAPI.Instance.CurrentMeme;
@@ -182,7 +182,7 @@ namespace CS_project
             }
         }
 
-        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LoadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //MessageBox.Show("Load");
             GeneratedMeme meme = LocalDB.Instance.OpenFromFile();

@@ -67,7 +67,7 @@ namespace CS_project
             this.pBox_meme.Location = new System.Drawing.Point(11, 11);
             this.pBox_meme.MinimumSize = new System.Drawing.Size(300, 300);
             this.pBox_meme.Name = "pBox_meme";
-            this.pBox_meme.Size = new System.Drawing.Size(828, 733);
+            this.pBox_meme.Size = new System.Drawing.Size(828, 782);
             this.pBox_meme.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pBox_meme.TabIndex = 0;
             this.pBox_meme.TabStop = false;
@@ -91,9 +91,8 @@ namespace CS_project
             this.tableLayoutPanel_main.Name = "tableLayoutPanel_main";
             this.tableLayoutPanel_main.Padding = new System.Windows.Forms.Padding(8);
             this.tableLayoutPanel_main.RowCount = 2;
-            this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
+            this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel_main.Size = new System.Drawing.Size(1684, 1002);
             this.tableLayoutPanel_main.TabIndex = 3;
             // 
@@ -124,7 +123,7 @@ namespace CS_project
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.Size = new System.Drawing.Size(828, 733);
             this.tableLayoutPanel2.TabIndex = 4;
             // 
@@ -278,7 +277,7 @@ namespace CS_project
             this.comboBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(845, 750);
+            this.comboBox1.Location = new System.Drawing.Point(845, 799);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(828, 50);
             this.comboBox1.TabIndex = 3;
@@ -291,11 +290,11 @@ namespace CS_project
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.generateBtn, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.resetBtn, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(11, 750);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(11, 799);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(828, 241);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(828, 192);
             this.tableLayoutPanel1.TabIndex = 6;
             // 
             // generateBtn
@@ -324,7 +323,6 @@ namespace CS_project
             // menuStrip1
             // 
             this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem});
@@ -349,14 +347,14 @@ namespace CS_project
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(321, 54);
             this.saveToolStripMenuItem.Text = "Save JSON";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
             this.loadToolStripMenuItem.Size = new System.Drawing.Size(321, 54);
             this.loadToolStripMenuItem.Text = "Load JSON";
-            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
+            this.loadToolStripMenuItem.Click += new System.EventHandler(this.LoadToolStripMenuItem_Click);
             // 
             // saveImageToolStripMenuItem
             // 
@@ -367,13 +365,13 @@ namespace CS_project
             // 
             // CreateMemeForm
             // 
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(1684, 1055);
             this.Controls.Add(this.tableLayoutPanel_main);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "CreateMemeForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = " ";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);

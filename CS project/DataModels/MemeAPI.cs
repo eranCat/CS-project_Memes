@@ -64,9 +64,10 @@ namespace CS_project
                 {
                     if ((bool)json["success"])
                     {
+                        //TODO use class for data response
                         string pageUrl = (string)json["data"]["page_url"];
                         string url = (string)json["data"]["url"];
-                        m.ImgUrl = url;
+                        m.Url = url;
                         this.currentMeme = m;
                         Debug.WriteLine("Created meme at:" + pageUrl);
                     }

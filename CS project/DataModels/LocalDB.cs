@@ -1,9 +1,14 @@
-﻿using System.IO;
+﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text.Json;
 
 namespace CS_project.DataModels
 {
-    class LocalDB
+    public class LocalDB
     {
         private static LocalDB instance = new LocalDB();
 
@@ -11,45 +16,64 @@ namespace CS_project.DataModels
         {
         }
 
-        public static LocalDB Instance { get { return instance; } }
+        public static LocalDB Instance => instance;
 
 
         public void SaveData(GeneratedMeme meme,string path = "meme.json")
         {
-            string json = JsonSerializer.Serialize(meme);
-            if (meme is FunnyMeme)
-            {
-               //set flag to funny
-            }
-            else if (meme is SadMeme)
-            {
-                //set flag to sad
-            }
-            File.WriteAllText(path, json);
+            string type = meme.GetType().Name;
+            var temp = new MemeJson(type,meme);
+            
+            saveDataToFile(path, temp);
         }
+
         public GeneratedMeme OpenFromFile(string path = "meme.json")
         {
-            GeneratedMeme meme = null;
+            if (!File.Exists(path))
+            {
+                return null;
+            }
+
+            var memeJson = GetDataFromFile<MemeJson>(path);
+
+            var meme = ConvertJsonToGeneratedMemeByType(memeJson);
+
+            return meme;
+        }
+
+        private GeneratedMeme ConvertJsonToGeneratedMemeByType(MemeJson dict)
+        {
+
+            switch (dict.Type)
+            {
+                case "FunnyMeme":
+                    return new FunnyMeme(dict.Meme);
+
+                case "SadMeme":
+                    return new SadMeme(dict.Meme);
+
+                default:
+                    return dict.Meme;
+            }
+        }
+
+        private T GetDataFromFile<T>(string path)
+        {
             if (File.Exists(path))
             {
-                string json = File.ReadAllText(path);
-                string type = "Funny";
-                switch (type)
-                {
-                    case "Funny":
-                        meme = JsonSerializer.Deserialize<FunnyMeme>(json);
-                        break;
-
-                    case "Sad":
-                        meme = JsonSerializer.Deserialize<SadMeme>(json);
-                        break;
-
-                    default:
-                        meme = JsonSerializer.Deserialize<GeneratedMeme>(json);
-                        break;
-                }
+                string data = File.ReadAllText(path);
+                var obj = JsonSerializer.Deserialize<T>(data);
+                return obj;
             }
-            return meme;
+
+            return default(T);
+        }
+
+        private bool saveDataToFile<T>(string path,T data)
+        {   
+            string jsonSerialized = JsonSerializer.Serialize(data);
+            File.WriteAllText(path,jsonSerialized);
+            return true;
         }
     }
 }

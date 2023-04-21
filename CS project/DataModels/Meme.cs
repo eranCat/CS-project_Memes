@@ -2,7 +2,7 @@
 
 namespace CS_project
 {
-    class Meme
+    public class Meme
     {
         protected string id;
         protected string name;
