@@ -1,11 +1,8 @@
 ﻿using CS_project.DataModels;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,15 +15,15 @@ namespace CS_project
         public CreateMemeForm()
         {
             InitializeComponent();
-            setFormSizePercentage(.8,.8);
+            setFormSizePercentage(.8, .8);
         }
 
-        private void setFormSizePercentage(double wPercent,double hPercent)
+        private void setFormSizePercentage(double wPercent, double hPercent)
         {
             Rectangle screen = Screen.FromPoint(Cursor.Position).WorkingArea;
             int w = (int)(screen.Width * wPercent);
             int h = (int)(screen.Height * hPercent);
-            
+
             this.Size = new Size(w, h);
         }
 
@@ -70,8 +67,6 @@ namespace CS_project
             string url = "url";
             string text1 = textBox1.Text;
             string text2 = textBox2.Text;
-            string text3 = textBox3.Text;
-            string text4 = textBox4.Text;
 
             RadioButton checkedRBtn = typePanel.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked);
             //MemeType memeType = MemeType.Funny;
@@ -79,10 +74,10 @@ namespace CS_project
             switch (checkedRBtn?.Name)
             {
                 case "rBtnFunny":
-                    newMeme = new FunnyMeme(id, name, url, text1, text2, text3, text4);
+                    newMeme = new FunnyMeme(id, name, url, text1, text2);
                     break;
                 case "rBtnSad":
-                    newMeme = new SadMeme(id, name, url, text1, text2, text3, text4);
+                    newMeme = new SadMeme(id, name, url, text1, text2);
                     break;
                 default:
                     MessageBox.Show("Choose a type!");
@@ -113,8 +108,6 @@ namespace CS_project
                 {
                     textBox1.Text = gm.Text1;
                     textBox2.Text = gm.Text2;
-                    textBox3.Text = gm.Text3;
-                    textBox4.Text = gm.Text4;
                     comboBox1.SelectedIndex = comboBox1.FindStringExact(gm.Name);
                 }
                 if (gm.Url != null)
@@ -155,8 +148,6 @@ namespace CS_project
         {
             textBox1.Clear();
             textBox2.Clear();
-            textBox3.Clear();
-            textBox4.Clear();
         }
 
         private void SaveToolStripMenuItem_Click(object sender, EventArgs e)

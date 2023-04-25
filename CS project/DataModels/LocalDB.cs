@@ -1,9 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
+﻿using System.IO;
 using System.Text.Json;
 
 namespace CS_project.DataModels
@@ -19,11 +14,11 @@ namespace CS_project.DataModels
         public static LocalDB Instance => instance;
 
 
-        public void SaveData(GeneratedMeme meme,string path = "meme.json")
+        public void SaveData(GeneratedMeme meme, string path = "meme.json")
         {
             string type = meme.GetType().Name;
-            var temp = new MemeJson(type,meme);
-            
+            var temp = new MemeJson(type, meme);
+
             saveDataToFile(path, temp);
         }
 
@@ -69,10 +64,10 @@ namespace CS_project.DataModels
             return default(T);
         }
 
-        private bool saveDataToFile<T>(string path,T data)
-        {   
+        private bool saveDataToFile<T>(string path, T data)
+        {
             string jsonSerialized = JsonSerializer.Serialize(data);
-            File.WriteAllText(path,jsonSerialized);
+            File.WriteAllText(path, jsonSerialized);
             return true;
         }
     }
