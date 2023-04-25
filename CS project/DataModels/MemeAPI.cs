@@ -31,14 +31,12 @@ namespace CS_project
 
         public GeneratedMeme CurrentMeme { get => currentMeme; set => currentMeme = value; }
 
-        public async Task CreateMemeAsync(GeneratedMeme m)
+        public async Task<GeneratedMeme> CreateMemeAsync(GeneratedMeme m)
         {
             Dictionary<string, string> formData = new Dictionary<string, string> {
                 {"template_id", m.Id },
                 {"username", Resource1.API_User },
                 {"password", Resource1.API_Password},
-                //{"boxes[0][text]", m.Text1},
-                //{"boxes[1][text]", m.Text2},
                 {"text0", m.Text1 },
                 {"text1", m.Text2 },
             };
@@ -70,6 +68,8 @@ namespace CS_project
                         m.Url = url;
                         this.currentMeme = m;
                         Debug.WriteLine("Created meme at:" + pageUrl);
+
+                        return m;
                     }
                     else
                     {
@@ -78,14 +78,12 @@ namespace CS_project
                         throw new Exception(errMsg);
                     }
                 }
-
-                
             }
             else
             {
                 Debug.WriteLine("Failed to make POST request. Status code: " + response.StatusCode);
             }
-
+            return null;
         }
 
         public async Task LoadPouplarMemes(bool randomise = false)

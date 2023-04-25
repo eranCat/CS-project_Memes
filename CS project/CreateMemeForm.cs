@@ -2,7 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -11,6 +14,7 @@ namespace CS_project
     public partial class CreateMemeForm : Form
     {
         bool generateOnEdit = true;//TODO save user's settigns with checkbox 
+        private List<Image> LoadedImages { get; set; }
 
         public CreateMemeForm()
         {
@@ -33,7 +37,7 @@ namespace CS_project
 
             try
             {
-                await MemeAPI.Instance.LoadPouplarMemes(randomise: true);
+                await MemeAPI.Instance.LoadPouplarMemes(randomise: false);
             }
             catch (Exception error)
             {
@@ -43,15 +47,66 @@ namespace CS_project
                 }));
                 return;
             }
-            // Update UI after the task is done
-            Invoke((MethodInvoker)(() =>
+            
+            LoadImages(MemeAPI.Instance.Memes);
+            fillListView(MemeAPI.Instance.Memes);
+        }
+
+        private void fillListView(List<Meme> memes)
+        {
+            ImageList images = new ImageList();
+            ListViewItem item;
+            images.ImageSize = new Size(100, 100);
+            for (int i = 0; i < memes.Count; i++)
             {
-                // Update UI controls here
-                Dictionary<string, string> id_names = MemeAPI.Instance.getMappedMemes();
-                comboBox1.DataSource = new BindingSource(id_names, null);
-                comboBox1.DisplayMember = "Value";
-                comboBox1.ValueMember = "Key";
-            }));
+                Meme meme = memes[i];
+                var imageFromUrl = LoadedImages[i];
+                images.Images.Add(imageFromUrl);
+                item = new ListViewItem(meme.Name, i);
+                item.Tag = meme;
+                listViewMemes.Items.Add(item);
+            }
+
+            listViewMemes.LargeImageList = images;
+
+            listViewMemes.Items[0].Selected = true;
+        }
+
+        private void LoadImages(List<Meme> memes)
+        {
+            LoadedImages = new List<Image>(memes.Count);
+            foreach (var meme in memes)
+            {
+                Image img = DownloadImageFromUrl(meme.Url);
+                LoadedImages.Add(img);
+            }
+        }
+
+        public Image DownloadImageFromUrl(string imageUrl)
+        {
+            Image image = null;
+
+            try
+            {
+                HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(imageUrl);
+                webRequest.AllowWriteStreamBuffering = true;
+                webRequest.Timeout = 30000;
+
+                WebResponse webResponse = webRequest.GetResponse();
+
+                Stream stream = webResponse.GetResponseStream();
+
+                image = Image.FromStream(stream);
+
+                webResponse.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
+
+            return image;
         }
 
         private void generateMeme_Click(object sender, EventArgs e)
@@ -59,17 +114,21 @@ namespace CS_project
             GenerateMeme();
         }
 
-        private async Task GenerateMeme()
+        private async void GenerateMeme()
         {
-            KeyValuePair<string, string> selectedItem = (KeyValuePair<string, string>)comboBox1.SelectedItem;
-            string id = selectedItem.Key;
-            string name = selectedItem.Value;
+            if (listViewMemes.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Select an image");
+                return;
+            }
+            Meme meme = (Meme)listViewMemes.SelectedItems[0].Tag;
+            string id = meme.Id;
+            string name = meme.Name;
             string url = "url";
             string text1 = textBox1.Text;
             string text2 = textBox2.Text;
 
             RadioButton checkedRBtn = typePanel.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked);
-            //MemeType memeType = MemeType.Funny;
             GeneratedMeme newMeme;
             switch (checkedRBtn?.Name)
             {
@@ -86,21 +145,21 @@ namespace CS_project
 
             try
             {
-                await MemeAPI.Instance.CreateMemeAsync(newMeme);
+                newMeme = await MemeAPI.Instance.CreateMemeAsync(newMeme);
             }
             catch (Exception err)
             {
-                Invoke((MethodInvoker)(() => MessageBox.Show(err.Message)));
+                MessageBox.Show(err.Message);
                 return;
             }
-
-            ShowMeme(newMeme);
+            if (newMeme != null)
+            {
+                ShowMeme(newMeme);
+            }
         }
 
         private void ShowMeme(Meme m, bool fillFields = false)
         {
-            if (m == null) return;
-
             if (m is GeneratedMeme)
             {
                 GeneratedMeme gm = (GeneratedMeme)m;
@@ -108,7 +167,7 @@ namespace CS_project
                 {
                     textBox1.Text = gm.Text1;
                     textBox2.Text = gm.Text2;
-                    comboBox1.SelectedIndex = comboBox1.FindStringExact(gm.Name);
+                    //comboBox1.SelectedIndex = comboBox1.FindStringExact(gm.Name);
                 }
                 if (gm.Url != null)
                 {
@@ -133,12 +192,6 @@ namespace CS_project
 
         }
 
-        private void comboBox1_SelectionIndexChanged(object sender, EventArgs e)
-        {
-            int i = comboBox1.SelectedIndex;
-            ShowMeme(MemeAPI.Instance.Memes[i]);
-        }
-
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             MemeAPI.clearResources();
@@ -152,7 +205,6 @@ namespace CS_project
 
         private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("Save");
             GeneratedMeme m = MemeAPI.Instance.CurrentMeme;
             if (m == null)
             {
@@ -192,7 +244,8 @@ namespace CS_project
         private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
-            string selectedMemeName = ((KeyValuePair<string, string>)comboBox1.SelectedItem).Value;
+            string selectedMemeName = MemeAPI.Instance.CurrentMeme?.Name ?? "My meme";
+            //string selectedMemeName = ((KeyValuePair<string, string>)comboBox1.SelectedItem).Value;
             saveDialog.FileName = selectedMemeName;
             saveDialog.DefaultExt = "jpg";
             saveDialog.Filter = "JPG Image | *.jpg";
@@ -223,6 +276,16 @@ namespace CS_project
             if (!generateOnEdit) return;
             if (textBox.Text.Length > 0)
                 GenerateMeme();
+        }
+
+        private void listViewMemes_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (listViewMemes.SelectedIndices.Count > 0)
+            {
+                var index = listViewMemes.SelectedIndices[0];
+                Image selectedImage = LoadedImages[index];
+                pBox_meme.Image = selectedImage;
+            }
         }
     }
 }
