@@ -1,13 +1,15 @@
-﻿using CS_project.DataModels;
+﻿using CS_project.CS_project;
+using CS_project.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Media;
 
 namespace CS_project
 {
@@ -33,37 +35,75 @@ namespace CS_project
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            generateBtn.Enabled = true;
+            Progress<int> progress = new Progress<int>();
 
+            ProgressBar pb = progressBar1;
+
+            progress.ProgressChanged += (s, step) =>
+            {
+                if (step != -1)
+                {
+                    if (step >= pb.Maximum)
+                    {
+                        pb.Hide();
+                    }
+                    else
+                    {
+                        pb.Value = step;
+                        if (!pb.Visible)
+                        {
+                            pb.Show();
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Issue with loading");
+                    pb.Hide();
+                }
+            };
+            List<Meme> memesRes = null;
             try
             {
-                await MemeAPI.Instance.LoadPouplarMemes(randomise: false);
+                memesRes = await MemeAPI.Instance.LoadPouplarMemes(progress);
             }
             catch (Exception error)
             {
-                Invoke((MethodInvoker)(() =>
-                {
-                    MessageBox.Show(error.Message);
-                }));
-                return;
+                MessageBox.Show(error.Message);
+                pb.Hide();
             }
-            
-            LoadImages(MemeAPI.Instance.Memes);
-            fillListView(MemeAPI.Instance.Memes);
+
+            if (memesRes != null)
+            {
+                await LoadImagesAsync(memesRes, progress);
+                fillListView(memesRes);
+                pb.Value = pb.Maximum;
+                generateBtn.Enabled = true;
+            }
         }
 
         private void fillListView(List<Meme> memes)
         {
             ImageList images = new ImageList();
-            ListViewItem item;
             images.ImageSize = new Size(100, 100);
+            images.ColorDepth = ColorDepth.Depth32Bit;
+
+            ListViewItem item;
             for (int i = 0; i < memes.Count; i++)
             {
                 Meme meme = memes[i];
-                var imageFromUrl = LoadedImages[i];
-                images.Images.Add(imageFromUrl);
-                item = new ListViewItem(meme.Name, i);
-                item.Tag = meme;
+                
+                var thumb = GraphicsHelper.FixedSize(
+                    LoadedImages[i],
+                    images.ImageSize.Width,
+                    images.ImageSize.Height,
+                    BackColor);
+
+                images.Images.Add(thumb);
+                item = new ListViewItem(meme.Name, i)
+                {
+                    Tag = meme
+                };
                 listViewMemes.Items.Add(item);
             }
 
@@ -72,27 +112,30 @@ namespace CS_project
             listViewMemes.Items[0].Selected = true;
         }
 
-        private void LoadImages(List<Meme> memes)
+        private async Task LoadImagesAsync(List<Meme> memes, IProgress<int> progressEvent)
         {
             LoadedImages = new List<Image>(memes.Count);
-            foreach (var meme in memes)
+            for (int i = 0; i < memes.Count; i++)
             {
-                Image img = DownloadImageFromUrl(meme.Url);
+                Meme meme = memes[i];
+                Image img = await DownloadImageFromUrlAsync(meme.Url);
                 LoadedImages.Add(img);
+
+                progressEvent.Report(i+1);
             }
         }
 
-        public Image DownloadImageFromUrl(string imageUrl)
+        public async Task<Image> DownloadImageFromUrlAsync(string imageUrl)
         {
             Image image = null;
 
             try
             {
-                HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(imageUrl);
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(imageUrl);
                 webRequest.AllowWriteStreamBuffering = true;
                 webRequest.Timeout = 30000;
 
-                WebResponse webResponse = webRequest.GetResponse();
+                WebResponse webResponse = await webRequest.GetResponseAsync();
 
                 Stream stream = webResponse.GetResponseStream();
 

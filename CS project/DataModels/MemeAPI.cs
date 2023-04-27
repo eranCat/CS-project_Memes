@@ -86,13 +86,15 @@ namespace CS_project
             return null;
         }
 
-        public async Task LoadPouplarMemes(bool randomise = false)
+        public async Task<List<Meme>> LoadPouplarMemes(IProgress<int> progress)
         {
-            Debug.WriteLine("Load memes - get");
-
+            //Debug.WriteLine("Load memes - get");
+            progress.Report(0);
             var jsonStr = await client.GetStringAsync(Resource1.EndPointGetPopular);
-
-            Debug.WriteLine(jsonStr);
+            progress.Report(40);
+            //Debug.WriteLine(jsonStr);
+            
+            progress.Report(50);
             JObject json = JObject.Parse(jsonStr);
 
             if ((bool)json["success"])
@@ -103,21 +105,26 @@ namespace CS_project
 
                 memes = memesJsonArr.ToObject<List<Meme>>();
 
-                if (randomise)
-                {
-                    Shuffle(memes);
-                }
+                //if (randomise)
+                //{
+                //    Shuffle(memes);
+                //}
 
                 Debug.WriteLine("Memes Loaded:" + memes);
+                progress.Report(100);
+                return memes;
             }
             else
             {
                 //handle the error 
                 string errMsg = (string)json["error_message"];
                 Debug.WriteLine(errMsg);
+                progress.Report(-1);
 
                 throw new Exception(errMsg);
             }
+
+            return null;
 
         }
         public static void Shuffle<T>(IList<T> list)

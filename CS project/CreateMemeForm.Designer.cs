@@ -1,4 +1,6 @@
 ﻿
+using System.Drawing;
+
 namespace CS_project
 {
     partial class CreateMemeForm
@@ -40,15 +42,16 @@ namespace CS_project
             this.typePanel = new System.Windows.Forms.Panel();
             this.rBtnSad = new System.Windows.Forms.RadioButton();
             this.rBtnFunny = new System.Windows.Forms.RadioButton();
+            this.listViewMemes = new System.Windows.Forms.ListView();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.generateBtn = new System.Windows.Forms.Button();
             this.resetBtn = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.listViewMemes = new System.Windows.Forms.ListView();
             ((System.ComponentModel.ISupportInitialize)(this.pBox_meme)).BeginInit();
             this.tableLayoutPanel_main.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -80,6 +83,7 @@ namespace CS_project
             this.tableLayoutPanel_main.Controls.Add(this.pBox_meme, 2, 0);
             this.tableLayoutPanel_main.Controls.Add(this.listViewMemes, 0, 0);
             this.tableLayoutPanel_main.Controls.Add(this.tableLayoutPanel1, 1, 1);
+            this.tableLayoutPanel_main.Controls.Add(this.progressBar1, 2, 1);
             this.tableLayoutPanel_main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel_main.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.tableLayoutPanel_main.Location = new System.Drawing.Point(0, 53);
@@ -213,6 +217,18 @@ namespace CS_project
             this.rBtnFunny.Text = "Funny";
             this.rBtnFunny.UseVisualStyleBackColor = true;
             // 
+            // listViewMemes
+            // 
+            this.listViewMemes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewMemes.HideSelection = false;
+            this.listViewMemes.Location = new System.Drawing.Point(11, 11);
+            this.listViewMemes.Name = "listViewMemes";
+            this.tableLayoutPanel_main.SetRowSpan(this.listViewMemes, 2);
+            this.listViewMemes.Size = new System.Drawing.Size(406, 980);
+            this.listViewMemes.TabIndex = 7;
+            this.listViewMemes.UseCompatibleStateImageBehavior = false;
+            this.listViewMemes.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listViewMemes_ItemSelectionChanged);
+            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
@@ -249,6 +265,16 @@ namespace CS_project
             this.resetBtn.Text = "Reset";
             this.resetBtn.UseVisualStyleBackColor = true;
             this.resetBtn.Click += new System.EventHandler(this.resetButton_Click);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.progressBar1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.progressBar1.Location = new System.Drawing.Point(909, 961);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(764, 30);
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar1.TabIndex = 8;
             // 
             // menuStrip1
             // 
@@ -293,18 +319,6 @@ namespace CS_project
             this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(321, 54);
             this.saveImageToolStripMenuItem.Text = "Save image";
             this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.saveImageToolStripMenuItem_Click);
-            // 
-            // listViewMemes
-            // 
-            this.listViewMemes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listViewMemes.HideSelection = false;
-            this.listViewMemes.Location = new System.Drawing.Point(11, 11);
-            this.listViewMemes.Name = "listViewMemes";
-            this.tableLayoutPanel_main.SetRowSpan(this.listViewMemes, 2);
-            this.listViewMemes.Size = new System.Drawing.Size(406, 980);
-            this.listViewMemes.TabIndex = 7;
-            this.listViewMemes.UseCompatibleStateImageBehavior = false;
-            this.listViewMemes.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listViewMemes_ItemSelectionChanged);
             // 
             // CreateMemeForm
             // 
@@ -353,6 +367,7 @@ namespace CS_project
         private System.Windows.Forms.RadioButton rBtnSad;
         private System.Windows.Forms.RadioButton rBtnFunny;
         private System.Windows.Forms.ListView listViewMemes;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 
