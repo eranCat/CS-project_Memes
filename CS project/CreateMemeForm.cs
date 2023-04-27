@@ -121,7 +121,17 @@ namespace CS_project
                 MessageBox.Show("Select an image");
                 return;
             }
-            Meme meme = (Meme)listViewMemes.SelectedItems[0].Tag;
+            Meme meme;
+
+            if (MemeAPI.Instance.CurrentMeme != null)
+            {
+                meme = MemeAPI.Instance.CurrentMeme;
+            }
+            else
+            {
+                meme = (Meme)listViewMemes.SelectedItems[0].Tag;
+            }
+
             string id = meme.Id;
             string name = meme.Name;
             string url = "url";
@@ -212,9 +222,23 @@ namespace CS_project
             }
             else
             {
+                SaveMeme(m);
+            }
+        }
+
+        private static void SaveMeme(GeneratedMeme m)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "JSON|*.json";
+            saveFileDialog.Title = "Save meme json";
+            saveFileDialog.FileName = m.Name.Trim() + ".json";
+            var result = saveFileDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                string filename = saveFileDialog.FileName;
                 try
                 {
-                    LocalDB.Instance.SaveData(m);
+                    LocalDB.Instance.SaveData(m,filename);
                 }
                 catch (Exception err)
                 {
@@ -227,9 +251,14 @@ namespace CS_project
 
         private void LoadToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            string path = AskFileLocation();
             //MessageBox.Show("Load");
-            GeneratedMeme meme = LocalDB.Instance.OpenFromFile();
-            //MemeAPI.Instance.CurrentMeme;
+            GeneratedMeme meme;
+            if (path != null)
+                meme = LocalDB.Instance.OpenFromFile(path);
+            else
+                meme = LocalDB.Instance.OpenFromFile(); 
+
             if (meme != null)
             {
                 ShowMeme(meme, true);
@@ -239,6 +268,28 @@ namespace CS_project
             {
                 MessageBox.Show("No saved data found!");
             }
+        }
+
+        private string AskFileLocation()
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog
+            {
+                InitialDirectory = @"D:\",
+                Title = "Browse Text Files",
+
+                CheckFileExists = true,
+                CheckPathExists = true,
+
+                DefaultExt = "json",
+                Filter = "JSON files (*.json)|*.json",
+                FilterIndex = 2,
+                RestoreDirectory = true,
+
+                ReadOnlyChecked = true,
+                ShowReadOnly = true
+            };
+
+            return openFileDialog1.ShowDialog() == DialogResult.OK ? openFileDialog1.FileName : null;
         }
 
         private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
