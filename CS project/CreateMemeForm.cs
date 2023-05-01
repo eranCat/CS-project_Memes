@@ -15,8 +15,9 @@ namespace CS_project
 {
     public partial class CreateMemeForm : Form
     {
-        bool generateOnEdit = true;//TODO save user's settigns with checkbox 
+        bool generateOnEdit = true;//TODO save user's settings with checkbox 
         private List<Image> LoadedImages { get; set; }
+        public MemesListEditor EditForm { get; private set; }
 
         public CreateMemeForm()
         {
@@ -119,38 +120,11 @@ namespace CS_project
             for (int i = 0; i < memes.Count; i++)
             {
                 Meme meme = memes[i];
-                Image img = await DownloadImageFromUrlAsync(meme.Url);
+                Image img = await GraphicsHelper.DownloadImageFromUrlAsync(meme.Url);
                 LoadedImages.Add(img);
 
                 progressEvent.Report(i+1);
             }
-        }
-
-        public async Task<Image> DownloadImageFromUrlAsync(string imageUrl)
-        {
-            Image image = null;
-
-            try
-            {
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(imageUrl);
-                webRequest.AllowWriteStreamBuffering = true;
-                webRequest.Timeout = 30000;
-
-                WebResponse webResponse = await webRequest.GetResponseAsync();
-
-                Stream stream = webResponse.GetResponseStream();
-
-                image = Image.FromStream(stream);
-
-                webResponse.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return null;
-            }
-
-            return image;
         }
 
         private void generateMeme_Click(object sender, EventArgs e)
@@ -165,15 +139,14 @@ namespace CS_project
                 MessageBox.Show("Select an image");
                 return;
             }
-            Meme meme;
+            Meme meme = (Meme)listViewMemes.SelectedItems[0].Tag;
 
             if (MemeAPI.Instance.CurrentMeme != null)
             {
-                meme = MemeAPI.Instance.CurrentMeme;
-            }
-            else
-            {
-                meme = (Meme)listViewMemes.SelectedItems[0].Tag;
+                if (MemeAPI.Instance.CurrentMeme.Name == meme.Name)
+                {
+                    meme = MemeAPI.Instance.CurrentMeme;
+                }
             }
 
             string id = meme.Id;
@@ -282,7 +255,8 @@ namespace CS_project
                 string filename = saveFileDialog.FileName;
                 try
                 {
-                    LocalDB.Instance.SaveData(m,filename);
+                    LocalDB.Instance.SaveToList(m,filename);
+                    //LocalDB.Instance.SaveData(m,filename);
                 }
                 catch (Exception err)
                 {
@@ -296,22 +270,39 @@ namespace CS_project
         private void LoadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string path = AskFileLocation();
-            //MessageBox.Show("Load");
-            GeneratedMeme meme;
-            if (path != null)
-                meme = LocalDB.Instance.OpenFromFile(path);
-            else
-                meme = LocalDB.Instance.OpenFromFile(); 
+            if (path == null)
+            {
+                return;
+            }
 
-            if (meme != null)
+            //meme = LocalDB.Instance.OpenFromFile(path);
+
+            var listOfMemes = LocalDB.Instance.LoadListFromFile(path);
+            if (listOfMemes.Count == 0)
             {
-                ShowMeme(meme, true);
-                MemeAPI.Instance.CurrentMeme = meme;
+                MessageBox.Show("No memes to load");
+                return;
             }
-            else
+            if (this.EditForm == null)
             {
-                MessageBox.Show("No saved data found!");
+                this.EditForm = new MemesListEditor();
             }
+
+            this.EditForm.populate(listOfMemes);
+            this.EditForm.ShowDialog();
+
+            //MessageBox.Show("Load");
+            //GeneratedMeme meme = listOfMemes[0];
+
+            //if (meme != null)
+            //{
+            //ShowMeme(meme, true);
+            //MemeAPI.Instance.CurrentMeme = meme;
+            //}
+            //else
+            //{
+            //    MessageBox.Show("No saved data found!");
+            //}
         }
 
         private string AskFileLocation()

@@ -1,11 +1,15 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CS_project.CS_project
 {
     public static class GraphicsHelper
     {
-
         public static Image FixedSize(Image imgPhoto, int Width, int Height, Color bgColor)
         {
             int sourceWidth = imgPhoto.Width;
@@ -53,6 +57,33 @@ namespace CS_project.CS_project
 
             grPhoto.Dispose();
             return bmPhoto;
+        }
+
+        public static async Task<Image> DownloadImageFromUrlAsync(string imageUrl)
+        {
+            Image image = null;
+
+            try
+            {
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(imageUrl);
+                webRequest.AllowWriteStreamBuffering = true;
+                webRequest.Timeout = 30000;
+
+                WebResponse webResponse = await webRequest.GetResponseAsync();
+
+                Stream stream = webResponse.GetResponseStream();
+
+                image = Image.FromStream(stream);
+
+                webResponse.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
+
+            return image;
         }
     }
 }

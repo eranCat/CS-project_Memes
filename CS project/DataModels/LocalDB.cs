@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text.Json;
 
 namespace CS_project.DataModels
@@ -22,18 +24,37 @@ namespace CS_project.DataModels
             saveDataToFile(path, temp);
         }
 
+        public void SaveToList(GeneratedMeme meme, string path = "meme.json")
+        {
+            string type = meme.GetType().Name;
+            var temp = new MemeJson(type, meme);
+
+            var list = LoadListOfMemeJsonFromFile(path);
+            list.Add(temp);
+
+            saveDataToFile(path, list);
+        }
+
         public GeneratedMeme OpenFromFile(string path = "meme.json")
         {
-            if (!File.Exists(path))
-            {
-                return null;
-            }
-
             var memeJson = GetDataFromFile<MemeJson>(path);
 
             var meme = ConvertJsonToGeneratedMemeByType(memeJson);
 
             return meme;
+        }
+
+        public List<GeneratedMeme> LoadListFromFile(string path)
+        {
+            List<MemeJson> list = LoadListOfMemeJsonFromFile(path);
+            var memesList = list.Select(mjs => mjs.Meme).ToList();
+            return memesList;
+        }
+
+        private List<MemeJson> LoadListOfMemeJsonFromFile(string path)
+        {
+            var list = GetDataFromFile<List<MemeJson>>(path);
+            return list ?? new List<MemeJson>();
         }
 
         private GeneratedMeme ConvertJsonToGeneratedMemeByType(MemeJson dict)
@@ -61,7 +82,7 @@ namespace CS_project.DataModels
                 return obj;
             }
 
-            return default(T);
+            return default;
         }
 
         private bool saveDataToFile<T>(string path, T data)

@@ -24,10 +24,7 @@ namespace CS_project
             memes = new List<Meme>();
         }
 
-        public static MemeAPI Instance
-        {
-            get => instance;
-        }
+        public static MemeAPI Instance => instance;
 
         public GeneratedMeme CurrentMeme { get => currentMeme; set => currentMeme = value; }
 
