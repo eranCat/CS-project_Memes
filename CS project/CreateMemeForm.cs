@@ -75,6 +75,7 @@ namespace CS_project
 
             if (memesRes != null)
             {
+                pb.Maximum = memesRes.Count;
                 await LoadImagesAsync(memesRes, progress);
                 fillListView(memesRes);
                 pb.Value = pb.Maximum;
