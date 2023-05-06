@@ -16,12 +16,22 @@ namespace CS_project.DataModels
         public static LocalDB Instance => instance;
 
 
-        public void SaveData(GeneratedMeme meme, string path = "meme.json")
-        {
-            string type = meme.GetType().Name;
-            var temp = new MemeJson(type, meme);
+        //public void SaveData(GeneratedMeme meme, string path = "meme.json")
+        //{
+        //    string type = meme.GetType().Name;
+        //    var temp = new MemeJson(type, meme);
 
-            saveDataToFile(path, temp);
+        //    saveDataToFile(temp, path);
+        //}
+
+        public void SaveMemes(List<GeneratedMeme> memes, string path)
+        {
+            var jsons = memes.Select(meme => {
+                string type = meme.GetType().Name;
+                return new MemeJson(type, meme);
+            }).ToList();
+
+            saveDataToFile(jsons, path);
         }
 
         public void SaveToList(GeneratedMeme meme, string path = "meme.json")
@@ -32,7 +42,7 @@ namespace CS_project.DataModels
             var list = LoadListOfMemeJsonFromFile(path);
             list.Add(temp);
 
-            saveDataToFile(path, list);
+            saveDataToFile(list, path);
         }
 
         public GeneratedMeme OpenFromFile(string path = "meme.json")
@@ -78,6 +88,11 @@ namespace CS_project.DataModels
             if (File.Exists(path))
             {
                 string data = File.ReadAllText(path);
+                if (data=="")
+                {
+                    return default;
+                }
+                //TODO try catch
                 var obj = JsonSerializer.Deserialize<T>(data);
                 return obj;
             }
@@ -85,7 +100,7 @@ namespace CS_project.DataModels
             return default;
         }
 
-        private bool saveDataToFile<T>(string path, T data)
+        private bool saveDataToFile<T>(T data, string path)
         {
             string jsonSerialized = JsonSerializer.Serialize(data);
             File.WriteAllText(path, jsonSerialized);

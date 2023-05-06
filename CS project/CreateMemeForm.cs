@@ -13,7 +13,7 @@ using System.Windows.Media;
 
 namespace CS_project
 {
-    public partial class CreateMemeForm : Form
+    public partial class CreateMemeForm : Form , DoubleClickMemeEventListener
     {
         bool generateOnEdit = true;//TODO save user's settings with checkbox 
         private List<Image> LoadedImages { get; set; }
@@ -185,7 +185,7 @@ namespace CS_project
             }
         }
 
-        private void ShowMeme(Meme m, bool fillFields = false)
+        private void ShowMeme(Meme m, bool fillFields = true)
         {
             if (m is GeneratedMeme)
             {
@@ -196,12 +196,6 @@ namespace CS_project
                     textBox2.Text = gm.Text2;
                     //comboBox1.SelectedIndex = comboBox1.FindStringExact(gm.Name);
                 }
-                if (gm.Url != null)
-                {
-                    pBox_meme.Load(gm.Url);
-                }
-                else
-                    Console.WriteLine("image url returned null");
 
                 if (gm is FunnyMeme)
                 {
@@ -212,10 +206,20 @@ namespace CS_project
                     rBtnSad.Checked = true;
                 }
             }
-            else if (m.Url != null)
+            
+            if (m.Url != null)
             {
-                pBox_meme.Load(m.Url);
+                try
+                {
+                    pBox_meme.LoadAsync(m.Url);
+                }
+                catch (WebException we)
+                {
+                    MessageBox.Show(we.Message);
+                }
             }
+            else
+                Console.WriteLine("image url returned null");
 
         }
 
@@ -286,9 +290,10 @@ namespace CS_project
             if (this.EditForm == null)
             {
                 this.EditForm = new MemesListEditor();
+                this.EditForm.DblClickMemeEventListener = this;
             }
 
-            this.EditForm.populate(listOfMemes);
+            this.EditForm.populate(listOfMemes, path);
             this.EditForm.ShowDialog();
 
             //MessageBox.Show("Load");
@@ -309,7 +314,7 @@ namespace CS_project
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog
             {
-                InitialDirectory = @"D:\",
+                InitialDirectory = @"d:\",
                 Title = "Browse Text Files",
 
                 CheckFileExists = true,
@@ -372,6 +377,12 @@ namespace CS_project
                 Image selectedImage = LoadedImages[index];
                 pBox_meme.Image = selectedImage;
             }
+        }
+
+        public void OnDoubleClickMeme(GeneratedMeme meme, int index)
+        {
+            MemeAPI.Instance.CurrentMeme = meme;
+            ShowMeme(meme);
         }
     }
 }
