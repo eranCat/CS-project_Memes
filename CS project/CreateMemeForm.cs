@@ -127,30 +127,36 @@ namespace CS_project
             }
         }
 
-        private void generateMeme_Click(object sender, EventArgs e)
+        private async void generateMeme_ClickAsync(object sender, EventArgs e)
         {
-            GenerateMeme();
+            var meme = await GenerateMeme();
+            if (meme != null)
+            {
+                ShowMeme(meme);
+            }
         }
 
-        private async void GenerateMeme()
+        private async Task<GeneratedMeme> GenerateMeme()
         {
             if (listViewMemes.SelectedItems.Count == 0)
             {
                 MessageBox.Show("Select an image");
-                return;
+                return null;
             }
-            Meme meme = (Meme)listViewMemes.SelectedItems[0].Tag;
+            Meme selectedMeme = (Meme)listViewMemes.SelectedItems[0].Tag;
 
-            if (MemeAPI.Instance.CurrentMeme != null)
-            {
-                if (MemeAPI.Instance.CurrentMeme.Name == meme.Name)
-                {
-                    meme = MemeAPI.Instance.CurrentMeme;
-                }
-            }
+            //if (MemeAPI.Instance.CurrentMeme != null)
+            //{
+            //    string currName = MemeAPI.Instance.CurrentMeme.Name;
 
-            string id = meme.Id;
-            string name = meme.Name;
+            //    if (currName == selectedMeme.Name)
+            //    {
+            //        selectedMeme = MemeAPI.Instance.CurrentMeme;
+            //    }
+            //}
+
+            string id = selectedMeme.Id;
+            string name = selectedMeme.Name;
             string url = "url";
             string text1 = textBox1.Text;
             string text2 = textBox2.Text;
@@ -167,7 +173,7 @@ namespace CS_project
                     break;
                 default:
                     MessageBox.Show("Choose a type!");
-                    return;
+                    return null;
             }
 
             try
@@ -177,12 +183,9 @@ namespace CS_project
             catch (Exception err)
             {
                 MessageBox.Show(err.Message);
-                return;
+                return null;
             }
-            if (newMeme != null)
-            {
-                ShowMeme(newMeme);
-            }
+            return newMeme;
         }
 
         private void ShowMeme(Meme m, bool fillFields = true)
@@ -279,8 +282,6 @@ namespace CS_project
                 return;
             }
 
-            //meme = LocalDB.Instance.OpenFromFile(path);
-
             var listOfMemes = LocalDB.Instance.LoadListFromFile(path);
             if (listOfMemes.Count == 0)
             {
@@ -295,19 +296,6 @@ namespace CS_project
 
             this.EditForm.populate(listOfMemes, path);
             this.EditForm.ShowDialog();
-
-            //MessageBox.Show("Load");
-            //GeneratedMeme meme = listOfMemes[0];
-
-            //if (meme != null)
-            //{
-            //ShowMeme(meme, true);
-            //MemeAPI.Instance.CurrentMeme = meme;
-            //}
-            //else
-            //{
-            //    MessageBox.Show("No saved data found!");
-            //}
         }
 
         private string AskFileLocation()
@@ -353,20 +341,26 @@ namespace CS_project
                 bitmap.Save(saveDialog.FileName);
             }
         }
-        private void textBox1_Leave(object sender, EventArgs e)
+        private void textBox1_Changed(object sender, EventArgs e)
         {
-            updateFrom(textBox1);
+            updateFromAsync(textBox1);
         }
-        private void textBox2_Leave(object sender, EventArgs e)
+        private void textBox2_Changed(object sender, EventArgs e)
         {
-            updateFrom(textBox2);
+            updateFromAsync(textBox2);
         }
 
-        private void updateFrom(TextBox textBox)
+        private async Task updateFromAsync(TextBox textBox)
         {
             if (!generateOnEdit) return;
             if (textBox.Text.Length > 0)
-                GenerateMeme();
+            {
+                var newMeme = await GenerateMeme();
+                if (newMeme != null)
+                {
+                    ShowMeme(newMeme,false);
+                }
+            }
         }
 
         private void listViewMemes_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -382,7 +376,15 @@ namespace CS_project
         public void OnDoubleClickMeme(GeneratedMeme meme, int index)
         {
             MemeAPI.Instance.CurrentMeme = meme;
-            ShowMeme(meme);
+            ShowMeme(meme,true);
+
+            var item = listViewMemes.FindItemWithText(meme.Name);
+            
+            if (item != null)
+            {
+                listViewMemes.SelectedItems.Clear();
+                item.Selected = true;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -92,8 +93,24 @@ namespace CS_project.DataModels
                 {
                     return default;
                 }
-                //TODO try catch
-                var obj = JsonSerializer.Deserialize<T>(data);
+                var obj = default(T);
+                try
+                {
+                    obj = JsonSerializer.Deserialize<T>(data);
+                }
+                catch(NotSupportedException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                catch (JsonException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                catch (ArgumentNullException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
                 return obj;
             }
 

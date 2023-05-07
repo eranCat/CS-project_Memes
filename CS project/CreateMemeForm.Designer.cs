@@ -86,14 +86,14 @@ namespace CS_project
             this.tableLayoutPanel_main.Controls.Add(this.progressBar1, 2, 1);
             this.tableLayoutPanel_main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel_main.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.tableLayoutPanel_main.Location = new System.Drawing.Point(0, 53);
+            this.tableLayoutPanel_main.Location = new System.Drawing.Point(0, 57);
             this.tableLayoutPanel_main.Margin = new System.Windows.Forms.Padding(8);
             this.tableLayoutPanel_main.Name = "tableLayoutPanel_main";
             this.tableLayoutPanel_main.Padding = new System.Windows.Forms.Padding(8);
             this.tableLayoutPanel_main.RowCount = 2;
             this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90.06085F));
             this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.939148F));
-            this.tableLayoutPanel_main.Size = new System.Drawing.Size(1684, 1002);
+            this.tableLayoutPanel_main.Size = new System.Drawing.Size(1684, 998);
             this.tableLayoutPanel_main.TabIndex = 3;
             // 
             // tableLayoutPanel2
@@ -131,7 +131,7 @@ namespace CS_project
             this.textBox1.Size = new System.Drawing.Size(731, 100);
             this.textBox1.TabIndex = 5;
             this.textBox1.Text = "Top text";
-            this.textBox1.Leave += new System.EventHandler(this.textBox1_Leave);
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_Changed);
             // 
             // label1
             // 
@@ -157,7 +157,7 @@ namespace CS_project
             this.textBox2.Size = new System.Drawing.Size(731, 100);
             this.textBox2.TabIndex = 8;
             this.textBox2.Text = "Bottom text";
-            this.textBox2.Leave += new System.EventHandler(this.textBox2_Leave);
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_Changed);
             // 
             // label2
             // 
@@ -226,7 +226,7 @@ namespace CS_project
             this.listViewMemes.Location = new System.Drawing.Point(11, 11);
             this.listViewMemes.Name = "listViewMemes";
             this.tableLayoutPanel_main.SetRowSpan(this.listViewMemes, 2);
-            this.listViewMemes.Size = new System.Drawing.Size(406, 980);
+            this.listViewMemes.Size = new System.Drawing.Size(406, 976);
             this.listViewMemes.TabIndex = 7;
             this.listViewMemes.UseCompatibleStateImageBehavior = false;
             this.listViewMemes.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listViewMemes_ItemSelectionChanged);
@@ -238,7 +238,7 @@ namespace CS_project
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.generateBtn, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.resetBtn, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(423, 899);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(423, 895);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -255,7 +255,7 @@ namespace CS_project
             this.generateBtn.TabIndex = 1;
             this.generateBtn.Text = "Generate";
             this.generateBtn.UseVisualStyleBackColor = true;
-            this.generateBtn.Click += new System.EventHandler(this.generateMeme_Click);
+            this.generateBtn.Click += new System.EventHandler(this.generateMeme_ClickAsync);
             // 
             // resetBtn
             // 
@@ -272,7 +272,7 @@ namespace CS_project
             // 
             this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.progressBar1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.progressBar1.Location = new System.Drawing.Point(909, 961);
+            this.progressBar1.Location = new System.Drawing.Point(909, 957);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(764, 30);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
@@ -287,7 +287,7 @@ namespace CS_project
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1684, 53);
+            this.menuStrip1.Size = new System.Drawing.Size(1684, 57);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -298,7 +298,7 @@ namespace CS_project
             this.loadToolStripMenuItem,
             this.saveImageToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(89, 49);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(89, 53);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // saveToolStripMenuItem
