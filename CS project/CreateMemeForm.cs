@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -127,30 +128,36 @@ namespace CS_project
             }
         }
 
-        private void generateMeme_Click(object sender, EventArgs e)
+        private async void generateMeme_ClickAsync(object sender, EventArgs e)
         {
-            GenerateMeme();
+            var meme = await GenerateMeme();
+            if (meme != null)
+            {
+                ShowMeme(meme);
+            }
         }
 
-        private async void GenerateMeme()
+        private async Task<GeneratedMeme> GenerateMeme()
         {
             if (listViewMemes.SelectedItems.Count == 0)
             {
                 MessageBox.Show("Select an image");
-                return;
+                return null;
             }
-            Meme meme = (Meme)listViewMemes.SelectedItems[0].Tag;
+            Meme selectedMeme = (Meme)listViewMemes.SelectedItems[0].Tag;
 
-            if (MemeAPI.Instance.CurrentMeme != null)
-            {
-                if (MemeAPI.Instance.CurrentMeme.Name == meme.Name)
-                {
-                    meme = MemeAPI.Instance.CurrentMeme;
-                }
-            }
+            //if (MemeAPI.Instance.CurrentMeme != null)
+            //{
+            //    string currName = MemeAPI.Instance.CurrentMeme.Name;
 
-            string id = meme.Id;
-            string name = meme.Name;
+            //    if (currName == selectedMeme.Name)
+            //    {
+            //        selectedMeme = MemeAPI.Instance.CurrentMeme;
+            //    }
+            //}
+
+            string id = selectedMeme.Id;
+            string name = selectedMeme.Name;
             string url = "url";
             string text1 = textBox1.Text;
             string text2 = textBox2.Text;
@@ -167,7 +174,7 @@ namespace CS_project
                     break;
                 default:
                     MessageBox.Show("Choose a type!");
-                    return;
+                    return null;
             }
 
             try
@@ -177,12 +184,9 @@ namespace CS_project
             catch (Exception err)
             {
                 MessageBox.Show(err.Message);
-                return;
+                return null;
             }
-            if (newMeme != null)
-            {
-                ShowMeme(newMeme);
-            }
+            return newMeme;
         }
 
         private void ShowMeme(Meme m, bool fillFields = true)
@@ -279,8 +283,6 @@ namespace CS_project
                 return;
             }
 
-            //meme = LocalDB.Instance.OpenFromFile(path);
-
             var listOfMemes = LocalDB.Instance.LoadListFromFile(path);
             if (listOfMemes.Count == 0)
             {
@@ -295,19 +297,6 @@ namespace CS_project
 
             this.EditForm.populate(listOfMemes, path);
             this.EditForm.ShowDialog();
-
-            //MessageBox.Show("Load");
-            //GeneratedMeme meme = listOfMemes[0];
-
-            //if (meme != null)
-            //{
-            //ShowMeme(meme, true);
-            //MemeAPI.Instance.CurrentMeme = meme;
-            //}
-            //else
-            //{
-            //    MessageBox.Show("No saved data found!");
-            //}
         }
 
         private string AskFileLocation()
@@ -353,20 +342,26 @@ namespace CS_project
                 bitmap.Save(saveDialog.FileName);
             }
         }
-        private void textBox1_Leave(object sender, EventArgs e)
+        private void textBox1_Changed(object sender, EventArgs e)
         {
-            updateFrom(textBox1);
+            updateFromAsync(textBox1);
         }
-        private void textBox2_Leave(object sender, EventArgs e)
+        private void textBox2_Changed(object sender, EventArgs e)
         {
-            updateFrom(textBox2);
+            updateFromAsync(textBox2);
         }
 
-        private void updateFrom(TextBox textBox)
+        private async Task updateFromAsync(TextBox textBox)
         {
             if (!generateOnEdit) return;
             if (textBox.Text.Length > 0)
-                GenerateMeme();
+            {
+                var newMeme = await GenerateMeme();
+                if (newMeme != null)
+                {
+                    ShowMeme(newMeme,false);
+                }
+            }
         }
 
         private void listViewMemes_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -382,7 +377,71 @@ namespace CS_project
         public void OnDoubleClickMeme(GeneratedMeme meme, int index)
         {
             MemeAPI.Instance.CurrentMeme = meme;
-            ShowMeme(meme);
+            ShowMeme(meme,true);
+
+            var item = listViewMemes.FindItemWithText(meme.Name);
+            
+            if (item != null)
+            {
+                listViewMemes.SelectedItems.Clear();
+                item.Selected = true;
+            }
+        }
+
+        private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog OpenFileDialog = new OpenFileDialog();
+            OpenFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            OpenFileDialog.Filter = "Image files only (*.jpg,*.gif,*.png,*.bmp|*.jpg;*gif;*.png;*.bmp";
+            if (OpenFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    pBox_meme.Image = Image.FromFile(OpenFileDialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error" + ex.Message);
+                }
+            }
+        }
+
+        public static Bitmap AdjustBrightness(Bitmap Image, int Value)
+        {
+            Bitmap TempBitmap = Image;
+            float FinalValue = (float)Value / 512.0f;
+            Bitmap NewBitmap = new Bitmap(TempBitmap.Width, TempBitmap.Height);
+            Graphics NewGraphics = Graphics.FromImage(NewBitmap);
+            float[][] FloatColorMatrix ={
+             new float[] {1, 0, 0, 0, 0},
+             new float[] {0, 1, 0, 0, 0},
+             new float[] {0, 0, 1, 0, 0},
+             new float[] {0, 0, 0, 1, 0},
+             new float[] {FinalValue, FinalValue, FinalValue, 1, 1}
+             };
+            ColorMatrix NewColorMatrix = new ColorMatrix(FloatColorMatrix);
+            ImageAttributes Attributes = new ImageAttributes();
+            Attributes.SetColorMatrix(NewColorMatrix);
+            NewGraphics.DrawImage(TempBitmap,
+              new Rectangle(0, 0, TempBitmap.Width, TempBitmap.Height),
+              0, 0, TempBitmap.Width, TempBitmap.Height, GraphicsUnit.Pixel, Attributes);
+            Attributes.Dispose();
+            NewGraphics.Dispose();
+            return NewBitmap;
+        }
+        Bitmap newbitmap;
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            label4.Text = trackBar1.Value.ToString();
+            pBox_meme.Image = AdjustBrightness(newbitmap, trackBar1.Value);
+
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+            label6.Text = trackBar2.Value.ToString();
+            this.pBox_meme.Size = new Size(trackBar2.Value, trackBar2.Value);
         }
     }
 }
