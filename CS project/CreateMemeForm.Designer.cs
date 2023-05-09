@@ -52,12 +52,16 @@ namespace CS_project
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pBox_meme)).BeginInit();
             this.tableLayoutPanel_main.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.typePanel.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pBox_meme
@@ -86,14 +90,14 @@ namespace CS_project
             this.tableLayoutPanel_main.Controls.Add(this.progressBar1, 2, 1);
             this.tableLayoutPanel_main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel_main.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.tableLayoutPanel_main.Location = new System.Drawing.Point(0, 57);
+            this.tableLayoutPanel_main.Location = new System.Drawing.Point(0, 53);
             this.tableLayoutPanel_main.Margin = new System.Windows.Forms.Padding(8);
             this.tableLayoutPanel_main.Name = "tableLayoutPanel_main";
             this.tableLayoutPanel_main.Padding = new System.Windows.Forms.Padding(8);
             this.tableLayoutPanel_main.RowCount = 2;
             this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90.06085F));
             this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.939148F));
-            this.tableLayoutPanel_main.Size = new System.Drawing.Size(1684, 998);
+            this.tableLayoutPanel_main.Size = new System.Drawing.Size(1684, 1002);
             this.tableLayoutPanel_main.TabIndex = 3;
             // 
             // tableLayoutPanel2
@@ -109,14 +113,15 @@ namespace CS_project
             this.tableLayoutPanel2.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.label5, 0, 2);
             this.tableLayoutPanel2.Controls.Add(this.typePanel, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.flowLayoutPanel1, 1, 3);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(423, 11);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 3;
+            this.tableLayoutPanel2.RowCount = 4;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(480, 733);
             this.tableLayoutPanel2.TabIndex = 4;
             // 
@@ -191,7 +196,7 @@ namespace CS_project
             this.typePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.typePanel.Location = new System.Drawing.Point(116, 218);
             this.typePanel.Name = "typePanel";
-            this.typePanel.Size = new System.Drawing.Size(731, 511);
+            this.typePanel.Size = new System.Drawing.Size(731, 113);
             this.typePanel.TabIndex = 10;
             // 
             // rBtnSad
@@ -226,7 +231,7 @@ namespace CS_project
             this.listViewMemes.Location = new System.Drawing.Point(11, 11);
             this.listViewMemes.Name = "listViewMemes";
             this.tableLayoutPanel_main.SetRowSpan(this.listViewMemes, 2);
-            this.listViewMemes.Size = new System.Drawing.Size(406, 976);
+            this.listViewMemes.Size = new System.Drawing.Size(406, 980);
             this.listViewMemes.TabIndex = 7;
             this.listViewMemes.UseCompatibleStateImageBehavior = false;
             this.listViewMemes.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listViewMemes_ItemSelectionChanged);
@@ -238,7 +243,7 @@ namespace CS_project
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.generateBtn, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.resetBtn, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(423, 895);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(423, 899);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -272,7 +277,7 @@ namespace CS_project
             // 
             this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.progressBar1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.progressBar1.Location = new System.Drawing.Point(909, 957);
+            this.progressBar1.Location = new System.Drawing.Point(909, 961);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(764, 30);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
@@ -287,7 +292,7 @@ namespace CS_project
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1684, 57);
+            this.menuStrip1.Size = new System.Drawing.Size(1684, 53);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -298,7 +303,7 @@ namespace CS_project
             this.loadToolStripMenuItem,
             this.saveImageToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(89, 53);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(89, 49);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // saveToolStripMenuItem
@@ -322,6 +327,39 @@ namespace CS_project
             this.saveImageToolStripMenuItem.Text = "Save image";
             this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.saveImageToolStripMenuItem_Click);
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox1.Location = new System.Drawing.Point(3, 3);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(239, 41);
+            this.checkBox1.TabIndex = 11;
+            this.checkBox1.Text = "Reverse text1";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChangedAsync);
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.checkBox1);
+            this.flowLayoutPanel1.Controls.Add(this.checkBox2);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(116, 338);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(361, 158);
+            this.flowLayoutPanel1.TabIndex = 12;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox2.Location = new System.Drawing.Point(3, 50);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(241, 41);
+            this.checkBox2.TabIndex = 12;
+            this.checkBox2.Text = "Reverse text2";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChangedAsync);
+            // 
             // CreateMemeForm
             // 
             this.BackColor = System.Drawing.SystemColors.Window;
@@ -343,6 +381,8 @@ namespace CS_project
             this.tableLayoutPanel1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -370,6 +410,9 @@ namespace CS_project
         private System.Windows.Forms.RadioButton rBtnFunny;
         private System.Windows.Forms.ListView listViewMemes;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }
 

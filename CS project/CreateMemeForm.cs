@@ -132,7 +132,7 @@ namespace CS_project
             var meme = await GenerateMeme();
             if (meme != null)
             {
-                ShowMeme(meme);
+                ShowMeme(meme,false);
             }
         }
 
@@ -145,21 +145,20 @@ namespace CS_project
             }
             Meme selectedMeme = (Meme)listViewMemes.SelectedItems[0].Tag;
 
-            //if (MemeAPI.Instance.CurrentMeme != null)
-            //{
-            //    string currName = MemeAPI.Instance.CurrentMeme.Name;
-
-            //    if (currName == selectedMeme.Name)
-            //    {
-            //        selectedMeme = MemeAPI.Instance.CurrentMeme;
-            //    }
-            //}
-
             string id = selectedMeme.Id;
             string name = selectedMeme.Name;
             string url = "url";
             string text1 = textBox1.Text;
             string text2 = textBox2.Text;
+
+            if(checkBox1.Checked)
+            {
+                text1 = String.Concat(text1.Reverse());
+            }
+            if(checkBox2.Checked)
+            {
+                text2 = String.Concat(text2.Reverse());
+            }
 
             RadioButton checkedRBtn = typePanel.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked);
             GeneratedMeme newMeme;
@@ -188,7 +187,7 @@ namespace CS_project
             return newMeme;
         }
 
-        private void ShowMeme(Meme m, bool fillFields = true)
+        private void ShowMeme(Meme m, bool fillFields)
         {
             if (m is GeneratedMeme)
             {
@@ -385,6 +384,18 @@ namespace CS_project
                 listViewMemes.SelectedItems.Clear();
                 item.Selected = true;
             }
+        }
+
+        private async void checkBox1_CheckedChangedAsync(object sender, EventArgs e)
+        {
+            GeneratedMeme m = await GenerateMeme();
+            if(m!=null)ShowMeme(m,false);
+        }
+
+        private async void checkBox2_CheckedChangedAsync(object sender, EventArgs e)
+        {
+            GeneratedMeme m = await GenerateMeme();
+            if (m != null) ShowMeme(m, false);
         }
     }
 }
