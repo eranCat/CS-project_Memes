@@ -136,14 +136,22 @@ namespace CS_project
             }
         }
 
+        private Meme currentMeme = null;
+
         private async Task<GeneratedMeme> GenerateMeme()
         {
-            if (listViewMemes.SelectedItems.Count == 0)
-            {
-                MessageBox.Show("Select an image");
-                return null;
+            Meme selectedMeme = currentMeme;
+            if (selectedMeme == null) {
+                if (listViewMemes.SelectedItems.Count > 0)
+                {
+                    selectedMeme = (Meme)listViewMemes.SelectedItems[0].Tag;
+                }
+                else
+                {
+                    MessageBox.Show("Select an image");
+                    return null;
+                }
             }
-            Meme selectedMeme = (Meme)listViewMemes.SelectedItems[0].Tag;
 
             string id = selectedMeme.Id;
             string name = selectedMeme.Name;
@@ -162,28 +170,44 @@ namespace CS_project
 
             RadioButton checkedRBtn = typePanel.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked);
             GeneratedMeme newMeme;
-            switch (checkedRBtn?.Name)
+            long uid = -1;
+
+            if (selectedMeme is GeneratedMeme)
             {
-                case "rBtnFunny":
-                    newMeme = new FunnyMeme(id, name, url, text1, text2);
-                    break;
-                case "rBtnSad":
-                    newMeme = new SadMeme(id, name, url, text1, text2);
-                    break;
-                default:
-                    MessageBox.Show("Choose a type!");
-                    return null;
+                newMeme = (GeneratedMeme)selectedMeme;
+                newMeme.Text1 = text1;
+                newMeme.Text2 = text2;
+                uid = newMeme.Uid;
+            }
+            else
+            {
+                switch (checkedRBtn?.Name)
+                {
+                    case "rBtnFunny":
+                        newMeme = new FunnyMeme(id, name, url, text1, text2);
+                        break;
+                    case "rBtnSad":
+                        newMeme = new SadMeme(id, name, url, text1, text2);
+                        break;
+                    default:
+                        MessageBox.Show("Choose a type!");
+                        return null;
+                }
             }
 
             try
             {
                 newMeme = await MemeAPI.Instance.CreateMemeAsync(newMeme);
+                if (uid != -1)
+                    newMeme.Uid = uid;
+                currentMeme = newMeme;
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message);
                 return null;
             }
+
             return newMeme;
         }
 
@@ -194,9 +218,14 @@ namespace CS_project
                 GeneratedMeme gm = (GeneratedMeme)m;
                 if (fillFields)
                 {
+                    //detach and reattach event handlers to not update when updating texts programatically
+                    textBox1.TextChanged -= textBox1_Changed;
                     textBox1.Text = gm.Text1;
+                    textBox1.TextChanged += textBox1_Changed;
+
+                    textBox2.TextChanged -= textBox2_Changed;
                     textBox2.Text = gm.Text2;
-                    //comboBox1.SelectedIndex = comboBox1.FindStringExact(gm.Name);
+                    textBox2.TextChanged += textBox2_Changed;
                 }
 
                 if (gm is FunnyMeme)
@@ -238,14 +267,19 @@ namespace CS_project
 
         private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GeneratedMeme m = MemeAPI.Instance.CurrentMeme;
-            if (m == null)
+            //TODO make sure that when editing ,
+            //the currect meme uid stays the same after loading meme from file
+            if (currentMeme != null)
             {
-                MessageBox.Show("Create a meme first");
+                if (currentMeme is GeneratedMeme m)
+                {
+                    SaveMeme(m);
+                }
+                else MessageBox.Show("Not a generated meme");
             }
             else
             {
-                SaveMeme(m);
+                MessageBox.Show("Create a meme first");
             }
         }
 
@@ -259,9 +293,10 @@ namespace CS_project
             if (result == DialogResult.OK)
             {
                 string filename = saveFileDialog.FileName;
+                int res = -1;
                 try
                 {
-                    LocalDB.Instance.SaveToList(m,filename);
+                    res = LocalDB.Instance.SaveToList(m,filename);
                     //LocalDB.Instance.SaveData(m,filename);
                 }
                 catch (Exception err)
@@ -269,7 +304,19 @@ namespace CS_project
                     MessageBox.Show(err.Message);
                     return;
                 }
-                MessageBox.Show("Saved successfully");
+                switch (res)
+                {
+                    case 0:
+                        MessageBox.Show("Added successfully");
+                        break;
+                    case 1:
+                        MessageBox.Show("Updated successfully");
+                        break;
+
+                    default:
+                        MessageBox.Show("Couldn't update file!");
+                        break;
+                }
             }
         }
 
@@ -369,12 +416,14 @@ namespace CS_project
                 var index = listViewMemes.SelectedIndices[0];
                 Image selectedImage = LoadedImages[index];
                 pBox_meme.Image = selectedImage;
+                currentMeme = (Meme)listViewMemes.SelectedItems[0].Tag;
             }
         }
 
         public void OnDoubleClickMeme(GeneratedMeme meme, int index)
         {
             MemeAPI.Instance.CurrentMeme = meme;
+            currentMeme = meme;
             ShowMeme(meme,true);
 
             var item = listViewMemes.FindItemWithText(meme.Name);
@@ -382,7 +431,11 @@ namespace CS_project
             if (item != null)
             {
                 listViewMemes.SelectedItems.Clear();
+                //detach and reattach to not trigger the event
+                listViewMemes.ItemSelectionChanged -= listViewMemes_ItemSelectionChanged;
                 item.Selected = true;
+                listViewMemes.EnsureVisible(item.Index);
+                listViewMemes.ItemSelectionChanged += listViewMemes_ItemSelectionChanged;
             }
         }
 

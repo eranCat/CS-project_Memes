@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.Json;
 
 namespace CS_project.DataModels
@@ -16,15 +17,6 @@ namespace CS_project.DataModels
 
         public static LocalDB Instance => instance;
 
-
-        //public void SaveData(GeneratedMeme meme, string path = "meme.json")
-        //{
-        //    string type = meme.GetType().Name;
-        //    var temp = new MemeJson(type, meme);
-
-        //    saveDataToFile(temp, path);
-        //}
-
         public void SaveMemes(List<GeneratedMeme> memes, string path)
         {
             var jsons = memes.Select(meme => {
@@ -35,24 +27,35 @@ namespace CS_project.DataModels
             saveDataToFile(jsons, path);
         }
 
-        public void SaveToList(GeneratedMeme meme, string path = "meme.json")
+        public int SaveToList(GeneratedMeme meme, string path = "meme.json")
         {
             string type = meme.GetType().Name;
             var temp = new MemeJson(type, meme);
 
             var list = LoadListOfMemeJsonFromFile(path);
-            list.Add(temp);
+            bool hasUpdated = false;
+            foreach (var jmeme in list)
+            {
+                if(jmeme.Meme.Uid == meme.Uid)
+                {
+                    jmeme.Meme = meme;
+                    hasUpdated = true;
+                    break;
+                }
+            }
+            if (!hasUpdated)
+            {
+                list.Add(temp);
+            }
 
-            saveDataToFile(list, path);
-        }
+            bool hasSaved = saveDataToFile(list, path);
 
-        public GeneratedMeme OpenFromFile(string path = "meme.json")
-        {
-            var memeJson = GetDataFromFile<MemeJson>(path);
+            if (hasSaved)
+            {
+                return hasUpdated ? 1 : 0;
+            }
 
-            var meme = ConvertJsonToGeneratedMemeByType(memeJson);
-
-            return meme;
+            return -1;
         }
 
         public List<GeneratedMeme> LoadListFromFile(string path)
@@ -66,22 +69,6 @@ namespace CS_project.DataModels
         {
             var list = GetDataFromFile<List<MemeJson>>(path);
             return list ?? new List<MemeJson>();
-        }
-
-        private GeneratedMeme ConvertJsonToGeneratedMemeByType(MemeJson dict)
-        {
-
-            switch (dict.Type)
-            {
-                case "FunnyMeme":
-                    return new FunnyMeme(dict.Meme);
-
-                case "SadMeme":
-                    return new SadMeme(dict.Meme);
-
-                default:
-                    return dict.Meme;
-            }
         }
 
         private T GetDataFromFile<T>(string path)
@@ -123,5 +110,30 @@ namespace CS_project.DataModels
             File.WriteAllText(path, jsonSerialized);
             return true;
         }
+
+        //public GeneratedMeme OpenFromFile(string path = "meme.json")
+        //{
+        //    var memeJson = GetDataFromFile<MemeJson>(path);
+
+        //    var meme = ConvertJsonToGeneratedMemeByType(memeJson);
+
+        //    return meme;
+        //}
+
+        //private GeneratedMeme ConvertJsonToGeneratedMemeByType(MemeJson dict)
+        //{
+
+        //    switch (dict.Type)
+        //    {
+        //        case "FunnyMeme":
+        //            return new FunnyMeme(dict.Meme);
+
+        //        case "SadMeme":
+        //            return new SadMeme(dict.Meme);
+
+        //        default:
+        //            return dict.Meme;
+        //    }
+        //}
     }
 }

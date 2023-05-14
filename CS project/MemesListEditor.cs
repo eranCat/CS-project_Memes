@@ -77,7 +77,7 @@ namespace CS_project
         {
             //Delete items from list and from file
             var items = listView1.SelectedItems;
-            MessageBox.Show(items.GetType().Name);
+            
             foreach (var item in items)
             {
                 var meme = (GeneratedMeme)((ListViewItem)item).Tag;
