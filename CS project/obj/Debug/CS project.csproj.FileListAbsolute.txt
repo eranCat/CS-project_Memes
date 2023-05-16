@@ -1,0 +1,37 @@
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\CS project.exe.config
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\CS project.exe
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\CS project.pdb
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\Newtonsoft.Json.dll
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\System.Buffers.dll
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\System.Memory.dll
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\System.Text.Encodings.Web.dll
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\System.Text.Json.dll
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\System.ValueTuple.dll
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\Newtonsoft.Json.xml
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\System.Buffers.xml
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\System.Memory.xml
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\System.Text.Encodings.Web.xml
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\System.Text.Json.xml
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\bin\Debug\System.ValueTuple.xml
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\obj\Debug\CS project.csproj.AssemblyReference.cache
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\obj\Debug\CS project.csproj.SuggestedBindingRedirects.cache
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\obj\Debug\CS_project.CreateMemeForm.resources
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\obj\Debug\CS_project.MemesListEditor.resources
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\obj\Debug\CS_project.Properties.Resources.resources
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\obj\Debug\CS_project.Resource1.resources
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\obj\Debug\CS project.csproj.GenerateResource.cache
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\obj\Debug\CS project.csproj.CoreCompileInputs.cache
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\obj\Debug\CS project.csproj.CopyComplete
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\obj\Debug\CS project.exe
+C:\Users\User\Source\Repos\CS-project_Memes\CS project\obj\Debug\CS project.pdb
+C:\Users\User\source\repos\CS-project_Memes\CS project\obj\Debug\CS_project.frmLogin.resources
+C:\Users\User\source\repos\CS-project_Memes\CS project\bin\Debug\LoginDB.mdf
+C:\Users\User\source\repos\CS-project_Memes\CS project\bin\Debug\LoginDB_log.ldf

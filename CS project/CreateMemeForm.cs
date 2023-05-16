@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media;
 
+
 namespace CS_project
 {
     public partial class CreateMemeForm : Form , DoubleClickMemeEventListener
@@ -37,6 +38,8 @@ namespace CS_project
 
         private async void Form1_Load(object sender, EventArgs e)
         {
+            
+
             Progress<int> progress = new Progress<int>();
 
             ProgressBar pb = progressBar1;
@@ -191,6 +194,7 @@ namespace CS_project
 
         private void ShowMeme(Meme m, bool fillFields = true)
         {
+            newbitmap = (Bitmap)pBox_meme.Image;
             if (m is GeneratedMeme)
             {
                 GeneratedMeme gm = (GeneratedMeme)m;
@@ -224,6 +228,7 @@ namespace CS_project
             }
             else
                 Console.WriteLine("image url returned null");
+           
 
         }
 
@@ -250,6 +255,8 @@ namespace CS_project
                 SaveMeme(m);
             }
         }
+
+
 
         private static void SaveMeme(GeneratedMeme m)
         {
@@ -387,7 +394,6 @@ namespace CS_project
                 item.Selected = true;
             }
         }
-
         private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog OpenFileDialog = new OpenFileDialog();
@@ -405,9 +411,9 @@ namespace CS_project
                 }
             }
         }
-
         public static Bitmap AdjustBrightness(Bitmap Image, int Value)
         {
+
             Bitmap TempBitmap = Image;
             float FinalValue = (float)Value / 512.0f;
             Bitmap NewBitmap = new Bitmap(TempBitmap.Width, TempBitmap.Height);
@@ -430,7 +436,6 @@ namespace CS_project
             return NewBitmap;
         }
         Bitmap newbitmap;
-
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             label4.Text = trackBar1.Value.ToString();
@@ -440,7 +445,7 @@ namespace CS_project
 
         private void trackBar2_Scroll(object sender, EventArgs e)
         {
-            label6.Text = trackBar2.Value.ToString();
+            label7.Text = trackBar2.Value.ToString();
             this.pBox_meme.Size = new Size(trackBar2.Value, trackBar2.Value);
         }
     }
