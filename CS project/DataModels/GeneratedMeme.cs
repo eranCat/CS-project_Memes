@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CS_project.DataModels;
+using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace CS_project
 {
@@ -26,6 +28,11 @@ namespace CS_project
             return new Random((int)mili).Next();
         }
 
+        public virtual MemeJson ToMemeJson()
+        {
+            return new MemeJson(GetType().Name, this);
+        }
+
         public string Text1 { get => text1; set => text1 = value; }
         public string Text2 { get => text2; set => text2 = value; }
         public long Uid { get => uid; set => uid = value; }
@@ -47,6 +54,11 @@ namespace CS_project
         public SadMeme()
         {
         }
+
+        public override MemeJson ToMemeJson()
+        {
+            return new MemeJson(GetType().Name,this);
+        }
     }
 
     class FunnyMeme : GeneratedMeme
@@ -64,6 +76,11 @@ namespace CS_project
 
         public FunnyMeme()
         {
+        }
+
+        public override MemeJson ToMemeJson()
+        {
+            return new MemeJson(GetType().Name, this);
         }
     }
 }

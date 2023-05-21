@@ -19,12 +19,12 @@ namespace CS_project
         {
         }
 
-        public Meme(JObject data)
-        {
-            Id = (string)data["id"];
-            Name = (string)data["name"];
-            Url = (string)data["url"];
-        }
+        //public Meme(JObject data)
+        //{
+        //    Id = (string)data["id"];
+        //    Name = (string)data["name"];
+        //    Url = (string)data["url"];
+        //}
 
         public string Id { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }

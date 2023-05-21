@@ -2,7 +2,7 @@
 
 namespace CS_project.DataModels
 {
-    class MemeJson
+    public class MemeJson
     {
         [JsonPropertyName("type")]
         public string Type { get; set; }

@@ -90,14 +90,14 @@ namespace CS_project
             this.tableLayoutPanel_main.Controls.Add(this.progressBar1, 2, 1);
             this.tableLayoutPanel_main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel_main.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.tableLayoutPanel_main.Location = new System.Drawing.Point(0, 53);
+            this.tableLayoutPanel_main.Location = new System.Drawing.Point(0, 57);
             this.tableLayoutPanel_main.Margin = new System.Windows.Forms.Padding(8);
             this.tableLayoutPanel_main.Name = "tableLayoutPanel_main";
             this.tableLayoutPanel_main.Padding = new System.Windows.Forms.Padding(8);
             this.tableLayoutPanel_main.RowCount = 2;
             this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90.06085F));
             this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.939148F));
-            this.tableLayoutPanel_main.Size = new System.Drawing.Size(1684, 1002);
+            this.tableLayoutPanel_main.Size = new System.Drawing.Size(1684, 998);
             this.tableLayoutPanel_main.TabIndex = 3;
             // 
             // tableLayoutPanel2
@@ -264,7 +264,7 @@ namespace CS_project
             this.listViewMemes.Location = new System.Drawing.Point(11, 11);
             this.listViewMemes.Name = "listViewMemes";
             this.tableLayoutPanel_main.SetRowSpan(this.listViewMemes, 2);
-            this.listViewMemes.Size = new System.Drawing.Size(406, 980);
+            this.listViewMemes.Size = new System.Drawing.Size(406, 976);
             this.listViewMemes.TabIndex = 7;
             this.listViewMemes.UseCompatibleStateImageBehavior = false;
             this.listViewMemes.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listViewMemes_ItemSelectionChanged);
@@ -276,7 +276,7 @@ namespace CS_project
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.generateBtn, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.resetBtn, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(423, 899);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(423, 895);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -310,7 +310,7 @@ namespace CS_project
             // 
             this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.progressBar1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.progressBar1.Location = new System.Drawing.Point(909, 961);
+            this.progressBar1.Location = new System.Drawing.Point(909, 957);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(764, 30);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
@@ -325,7 +325,7 @@ namespace CS_project
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1684, 53);
+            this.menuStrip1.Size = new System.Drawing.Size(1684, 57);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 

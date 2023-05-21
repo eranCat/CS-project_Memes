@@ -19,19 +19,12 @@ namespace CS_project.DataModels
 
         public void SaveMemes(List<GeneratedMeme> memes, string path)
         {
-            var jsons = memes.Select(meme => {
-                string type = meme.GetType().Name;
-                return new MemeJson(type, meme);
-            }).ToList();
-
+            var jsons = memes.Select(meme => meme.ToMemeJson()).ToList();
             saveDataToFile(jsons, path);
         }
 
         public int SaveToList(GeneratedMeme meme, string path = "meme.json")
         {
-            string type = meme.GetType().Name;
-            var temp = new MemeJson(type, meme);
-
             var list = LoadListOfMemeJsonFromFile(path);
             bool hasUpdated = false;
             foreach (var jmeme in list)
@@ -45,6 +38,7 @@ namespace CS_project.DataModels
             }
             if (!hasUpdated)
             {
+                var temp = meme.ToMemeJson();
                 list.Add(temp);
             }
 
